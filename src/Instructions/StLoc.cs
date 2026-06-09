@@ -52,7 +52,11 @@ namespace Runic.CIL
                 }
                 else
                 {
+#if NET6_0_OR_GREATER
                     Signature.Type? type = context.GetType(_destination);
+#else
+                    Signature.Type type = context.GetType(_destination);
+#endif
                     if (type != null) { context.EmitLine("loc_" + _destination.ToString("X4") + " = (" + type.ToC(context) + ")(loc_" + _source.ToString("X4") + ");"); }
                     else { context.EmitLine("loc_" + _destination.ToString("X4") + " = loc_" + _source.ToString("X4") + ";"); }
                 }

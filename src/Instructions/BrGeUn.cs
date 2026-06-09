@@ -48,9 +48,17 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
+#if NET6_0_OR_GREATER
                 Signature.Type? typeOfA = context.GetType(_a); if (typeOfA == null) { typeOfA = Signature.Type.Unknown.Instance; }
+#else
+                Signature.Type typeOfA = context.GetType(_a); if (typeOfA == null) { typeOfA = Signature.Type.Unknown.Instance; }
+#endif
                 typeOfA = typeOfA.ToUnsigned();
+#if NET6_0_OR_GREATER
                 Signature.Type? typeOfB = context.GetType(_b); if (typeOfB == null) { typeOfB = Signature.Type.Unknown.Instance; }
+#else
+                Signature.Type typeOfB = context.GetType(_b); if (typeOfB == null) { typeOfB = Signature.Type.Unknown.Instance; }
+#endif
                 typeOfB = typeOfB.ToUnsigned();
                 context.EmitLine("if ((" + typeOfA.ToC(context) + ")loc_" + _a.ToString("X4") + " >= (" + typeOfB.ToC(context) + ")loc_" + _b.ToString("X4") + ") { goto lbl_" + _address.ToString("X4") + "; }");
             }

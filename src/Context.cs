@@ -24,11 +24,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using static Runic.CIL.ToC;
 
 namespace Runic.CIL
@@ -101,9 +97,17 @@ namespace Runic.CIL
             internal string GetGCLdFldMethod(bool noNullCheck, bool volatilePrefix, int alignment, uint fieldToken) { return _toC.GetGCLdFldMethod(noNullCheck, volatilePrefix, alignment, fieldToken); }
             internal string GetGCLdLenMethod() { return _toC.GetGCLdLenMethod(); }
             internal string GetGCString(uint token) { return _toC.GetGCString(token); }
+#if NET6_0_OR_GREATER
             internal Signature.Type? GetType(int local)
+#else
+            internal Signature.Type GetType(int local)
+#endif
             {
+#if NET6_0_OR_GREATER
                 Signature.Type? localType;
+#else
+                Signature.Type localType;
+#endif
                 if (_locals.TryGetValue(local, out localType)) { return localType; }
                 return null;
             }

@@ -49,8 +49,13 @@ namespace Runic.CIL
             public override void ToC(Context context)
             {
                 int slot = context.GetGCSlot(_destination);
+#if NET6_0_OR_GREATER
                 Signature.Type.ArrayType? arrayType = context.GetType(_destination) as Signature.Type.ArrayType;
                 Signature.Type? elementType = Signature.Type.Unknown.Instance;
+#else
+                Signature.Type.ArrayType arrayType = context.GetType(_destination) as Signature.Type.ArrayType;
+                Signature.Type elementType = Signature.Type.Unknown.Instance;
+#endif
                 if (arrayType != null) { elementType = arrayType.ElementType; }
                 List<byte> elementTypeSig = new List<byte>();
                 elementType.Emit(elementTypeSig);

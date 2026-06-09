@@ -48,11 +48,15 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
+#if NET6_0_OR_GREATER
                 Signature.Type? type = context.GetType(_destination);
-                Signature.Type? typeOfA = context.GetType(_a); if (typeOfA == null) { typeOfA = Signature.Type.Unknown.Instance; }
-                typeOfA = typeOfA.ToUnsigned();
-                Signature.Type? typeOfB = context.GetType(_b); if (typeOfB == null) { typeOfB = Signature.Type.Unknown.Instance; }
-                typeOfB = typeOfB.ToUnsigned();
+                Signature.Type? typeOfA = context.GetType(_a); if (typeOfA == null) { typeOfA = Signature.Type.Unknown.Instance; } typeOfA = typeOfA.ToUnsigned();
+                Signature.Type? typeOfB = context.GetType(_b); if (typeOfB == null) { typeOfB = Signature.Type.Unknown.Instance; } typeOfB = typeOfB.ToUnsigned();
+#else
+                Signature.Type type = context.GetType(_destination);
+                Signature.Type typeOfA = context.GetType(_a); if (typeOfA == null) { typeOfA = Signature.Type.Unknown.Instance; } typeOfA = typeOfA.ToUnsigned();
+                Signature.Type typeOfB = context.GetType(_b); if (typeOfB == null) { typeOfB = Signature.Type.Unknown.Instance; } typeOfB = typeOfB.ToUnsigned();
+#endif
                 if (type != null) { context.EmitLine("loc_" + _destination.ToString("X4") + " = (" + type.ToC(context) + ")((" + typeOfA.ToC(context) + ")loc_" + _a.ToString("X4") + " > (" + typeOfB.ToC(context) + ")loc_" + _b.ToString("X4") + ");"); }
                 else { context.EmitLine("loc_" + _destination.ToString("X4") + " = ((" + typeOfA.ToC(context) + ")loc_" + _a.ToString("X4") + " < (" + typeOfB.ToC(context) + ")loc_" + _b.ToString("X4") + ");"); }
             }

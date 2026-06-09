@@ -48,8 +48,11 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
+#if NET6_0_OR_GREATER
                 Signature.Type? type = context.GetType(_source);
-
+#else
+                Signature.Type type = context.GetType(_source);
+#endif
                 if (type != null)
                 {
                     switch (type)
