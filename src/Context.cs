@@ -131,7 +131,11 @@ namespace Runic.CIL
                 }
             }
 
-            public void Process(uint methodToken, byte[] bytecode)
+#if NET6_0_OR_GREATER
+            public void Process(ExceptionHandlingClause[]? exceptionHandlingClauses, uint methodToken, byte[] bytecode)
+#else
+            public void Process(ExceptionHandlingClause[] exceptionHandlingClauses, uint methodToken, byte[] bytecode)
+#endif
             {
                 string name = GetMethodName(methodToken);
                 HashSet<int> emittedOffsets = new HashSet<int>();
@@ -182,7 +186,26 @@ namespace Runic.CIL
                     }
                 }
 
-                _disassembler.Destackify(methodSignatureCode, localSignatureCode, bytecode);
+#if NET6_0_OR_GREATER
+                CIL.Destackifier.ExceptionHandlingClause[]? convertedEhc = null;
+#else
+                CIL.Destackifier.ExceptionHandlingClause[] convertedEhc = null;
+#endif
+                if (exceptionHandlingClauses != null)
+                {
+                    convertedEhc = new Destackifier.ExceptionHandlingClause[exceptionHandlingClauses.Length];
+                    for (int n = 0; n < exceptionHandlingClauses.Length; n++)
+                    {
+                        switch (exceptionHandlingClauses[n])
+                        {
+                            case ExceptionHandlingClause.Filter filter: convertedEhc[n] = new Destackifier.ExceptionHandlingClause.Filter(filter.FilterOffset, filter.HandlerOffset); break;
+                            case ExceptionHandlingClause.Clause clause: convertedEhc[n] = new Destackifier.ExceptionHandlingClause.Clause(clause.HandlerOffset); break;
+                        }
+                    }
+                }
+
+                if (convertedEhc != null) { _disassembler.Destackify(convertedEhc, methodSignatureCode, localSignatureCode, bytecode); }
+                else { _disassembler.Destackify(methodSignatureCode, localSignatureCode, bytecode); }
 
                 _gcslots = GC.CreateGCSlots(this, _disassembler.Instructions, _locals);
                 if (macro)

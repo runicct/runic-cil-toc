@@ -32,137 +32,192 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Runic.CIL.Destackifier, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Runic.CIL.Destackifier.1.0.5\lib\net48\Runic.CIL.Destackifier.dll</HintPath>
+      <HintPath>..\..\packages\Runic.CIL.Destackifier.1.0.6\lib\net48\Runic.CIL.Destackifier.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Context.cs" Link="Context.cs"/>
-    <Compile Include="..\..\src\Disassembler.cs" Link="Disassembler.cs"/>
-    <Compile Include="..\..\src\GC.cs" Link="GC.cs"/>
-    <Compile Include="..\..\src\Prototype.cs" Link="Prototype.cs"/>
-    <Compile Include="..\..\src\Signature.cs" Link="Signature.cs"/>
-    <Compile Include="..\..\src\ToC.cs" Link="ToC.cs"/>
-    <Compile Include="..\..\src\VariableDeclaration.cs" Link="VariableDeclaration.cs"/>
-    <Compile Include="..\..\src\Instructions\Add.cs" Link="Instructions\Add.cs"/>
-    <Compile Include="..\..\src\Instructions\AddOvf.cs" Link="Instructions\AddOvf.cs"/>
-    <Compile Include="..\..\src\Instructions\AddOvfUn.cs" Link="Instructions\AddOvfUn.cs"/>
-    <Compile Include="..\..\src\Instructions\And.cs" Link="Instructions\And.cs"/>
-    <Compile Include="..\..\src\Instructions\ArgList.cs" Link="Instructions\ArgList.cs"/>
-    <Compile Include="..\..\src\Instructions\Box.cs" Link="Instructions\Box.cs"/>
-    <Compile Include="..\..\src\Instructions\Br.cs" Link="Instructions\Br.cs"/>
-    <Compile Include="..\..\src\Instructions\Break.cs" Link="Instructions\Break.cs"/>
-    <Compile Include="..\..\src\Instructions\BrEq.cs" Link="Instructions\BrEq.cs"/>
-    <Compile Include="..\..\src\Instructions\BrFalse.cs" Link="Instructions\BrFalse.cs"/>
-    <Compile Include="..\..\src\Instructions\BrGe.cs" Link="Instructions\BrGe.cs"/>
-    <Compile Include="..\..\src\Instructions\BrGeUn.cs" Link="Instructions\BrGeUn.cs"/>
-    <Compile Include="..\..\src\Instructions\BrGt.cs" Link="Instructions\BrGt.cs"/>
-    <Compile Include="..\..\src\Instructions\BrGtUn.cs" Link="Instructions\BrGtUn.cs"/>
-    <Compile Include="..\..\src\Instructions\BrLe.cs" Link="Instructions\BrLe.cs"/>
-    <Compile Include="..\..\src\Instructions\BrLeUn.cs" Link="Instructions\BrLeUn.cs"/>
-    <Compile Include="..\..\src\Instructions\BrLt.cs" Link="Instructions\BrLt.cs"/>
-    <Compile Include="..\..\src\Instructions\BrLtUn.cs" Link="Instructions\BrLtUn.cs"/>
-    <Compile Include="..\..\src\Instructions\BrNeqUn.cs" Link="Instructions\BrNeqUn.cs"/>
-    <Compile Include="..\..\src\Instructions\BrTrue.cs" Link="Instructions\BrTrue.cs"/>
-    <Compile Include="..\..\src\Instructions\Call.cs" Link="Instructions\Call.cs"/>
-    <Compile Include="..\..\src\Instructions\CallProc.cs" Link="Instructions\CallProc.cs"/>
-    <Compile Include="..\..\src\Instructions\CallVirt.cs" Link="Instructions\CallVirt.cs"/>
-    <Compile Include="..\..\src\Instructions\CallVirtProc.cs" Link="Instructions\CallVirtProc.cs"/>
-    <Compile Include="..\..\src\Instructions\CastClass.cs" Link="Instructions\CastClass.cs"/>
-    <Compile Include="..\..\src\Instructions\Ceq.cs" Link="Instructions\Ceq.cs"/>
-    <Compile Include="..\..\src\Instructions\Cgt.cs" Link="Instructions\Cgt.cs"/>
-    <Compile Include="..\..\src\Instructions\CgtUn.cs" Link="Instructions\CgtUn.cs"/>
-    <Compile Include="..\..\src\Instructions\CkFinite.cs" Link="Instructions\CkFinite.cs"/>
-    <Compile Include="..\..\src\Instructions\Clt.cs" Link="Instructions\Clt.cs"/>
-    <Compile Include="..\..\src\Instructions\CltUn.cs" Link="Instructions\CltUn.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvI.cs" Link="Instructions\ConvI.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvI1.cs" Link="Instructions\ConvI1.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvI2.cs" Link="Instructions\ConvI2.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvI4.cs" Link="Instructions\ConvI4.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvI8.cs" Link="Instructions\ConvI8.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvOvfI.cs" Link="Instructions\ConvOvfI.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvOvfI1.cs" Link="Instructions\ConvOvfI1.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvOvfI2.cs" Link="Instructions\ConvOvfI2.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvOvfI4.cs" Link="Instructions\ConvOvfI4.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvOvfI8.cs" Link="Instructions\ConvOvfI8.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvR4.cs" Link="Instructions\ConvR4.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvR8.cs" Link="Instructions\ConvR8.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvU.cs" Link="Instructions\ConvU.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvU1.cs" Link="Instructions\ConvU1.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvU2.cs" Link="Instructions\ConvU2.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvU4.cs" Link="Instructions\ConvU4.cs"/>
-    <Compile Include="..\..\src\Instructions\ConvU8.cs" Link="Instructions\ConvU8.cs"/>
-    <Compile Include="..\..\src\Instructions\Div.cs" Link="Instructions\Div.cs"/>
-    <Compile Include="..\..\src\Instructions\DivUn.cs" Link="Instructions\DivUn.cs"/>
-    <Compile Include="..\..\src\Instructions\InitObj.cs" Link="Instructions\InitObj.cs"/>
-    <Compile Include="..\..\src\Instructions\Instruction.cs" Link="Instructions\Instruction.cs"/>
-    <Compile Include="..\..\src\Instructions\LdArg.cs" Link="Instructions\LdArg.cs"/>
-    <Compile Include="..\..\src\Instructions\LdArgA.cs" Link="Instructions\LdArgA.cs"/>
-    <Compile Include="..\..\src\Instructions\LdcI4.cs" Link="Instructions\LdcI4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdcI8.cs" Link="Instructions\LdcI8.cs"/>
-    <Compile Include="..\..\src\Instructions\LdcR4.cs" Link="Instructions\LdcR4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdcR8.cs" Link="Instructions\LdcR8.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemI.cs" Link="Instructions\LdElemI.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemI1.cs" Link="Instructions\LdElemI1.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemI2.cs" Link="Instructions\LdElemI2.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemI4.cs" Link="Instructions\LdElemI4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemI8.cs" Link="Instructions\LdElemI8.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemR4.cs" Link="Instructions\LdElemR4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemR8.cs" Link="Instructions\LdElemR8.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemU1.cs" Link="Instructions\LdElemU1.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemU2.cs" Link="Instructions\LdElemU2.cs"/>
-    <Compile Include="..\..\src\Instructions\LdElemU4.cs" Link="Instructions\LdElemU4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdFld.cs" Link="Instructions\LdFld.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndI.cs" Link="Instructions\LdIndI.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndI1.cs" Link="Instructions\LdIndI1.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndI2.cs" Link="Instructions\LdIndI2.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndI4.cs" Link="Instructions\LdIndI4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndI8.cs" Link="Instructions\LdIndI8.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndR4.cs" Link="Instructions\LdIndR4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndR8.cs" Link="Instructions\LdIndR8.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndU1.cs" Link="Instructions\LdIndU1.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIndU2.cs" Link="Instructions\LdIndU2.cs"/>
-    <Compile Include="..\..\src\Instructions\LdIntU4.cs" Link="Instructions\LdIntU4.cs"/>
-    <Compile Include="..\..\src\Instructions\LdLen.cs" Link="Instructions\LdLen.cs"/>
-    <Compile Include="..\..\src\Instructions\LdLocA.cs" Link="Instructions\LdLocA.cs"/>
-    <Compile Include="..\..\src\Instructions\LdNull.cs" Link="Instructions\LdNull.cs"/>
-    <Compile Include="..\..\src\Instructions\LdStr.cs" Link="Instructions\LdStr.cs"/>
-    <Compile Include="..\..\src\Instructions\Mul.cs" Link="Instructions\Mul.cs"/>
-    <Compile Include="..\..\src\Instructions\Neg.cs" Link="Instructions\Neg.cs"/>
-    <Compile Include="..\..\src\Instructions\NewArr.cs" Link="Instructions\NewArr.cs"/>
-    <Compile Include="..\..\src\Instructions\NewObj.cs" Link="Instructions\NewObj.cs"/>
-    <Compile Include="..\..\src\Instructions\Nop.cs" Link="Instructions\Nop.cs"/>
-    <Compile Include="..\..\src\Instructions\Not.cs" Link="Instructions\Not.cs"/>
-    <Compile Include="..\..\src\Instructions\Or.cs" Link="Instructions\Or.cs"/>
-    <Compile Include="..\..\src\Instructions\Rem.cs" Link="Instructions\Rem.cs"/>
-    <Compile Include="..\..\src\Instructions\RemUn.cs" Link="Instructions\RemUn.cs"/>
-    <Compile Include="..\..\src\Instructions\Ret.cs" Link="Instructions\Ret.cs"/>
-    <Compile Include="..\..\src\Instructions\RetVal.cs" Link="Instructions\RetVal.cs"/>
-    <Compile Include="..\..\src\Instructions\Shl.cs" Link="Instructions\Shl.cs"/>
-    <Compile Include="..\..\src\Instructions\Shr.cs" Link="Instructions\Shr.cs"/>
-    <Compile Include="..\..\src\Instructions\ShrUn.cs" Link="Instructions\ShrUn.cs"/>
-    <Compile Include="..\..\src\Instructions\StArg.cs" Link="Instructions\StArg.cs"/>
-    <Compile Include="..\..\src\Instructions\StElem.cs" Link="Instructions\StElem.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemI.cs" Link="Instructions\StElemI.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemI1.cs" Link="Instructions\StElemI1.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemI2.cs" Link="Instructions\StElemI2.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemI4.cs" Link="Instructions\StElemI4.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemI8.cs" Link="Instructions\StElemI8.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemR4.cs" Link="Instructions\StElemR4.cs"/>
-    <Compile Include="..\..\src\Instructions\StElemR8.cs" Link="Instructions\StElemR8.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndI.cs" Link="Instructions\StIndI.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndI1.cs" Link="Instructions\StIndI1.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndI2.cs" Link="Instructions\StIndI2.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndI4.cs" Link="Instructions\StIndI4.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndI8.cs" Link="Instructions\StIndI8.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndR4.cs" Link="Instructions\StIndR4.cs"/>
-    <Compile Include="..\..\src\Instructions\StIndR8.cs" Link="Instructions\StIndR8.cs"/>
-    <Compile Include="..\..\src\Instructions\StLoc.cs" Link="Instructions\StLoc.cs"/>
-    <Compile Include="..\..\src\Instructions\Sub.cs" Link="Instructions\Sub.cs"/>
-    <Compile Include="..\..\src\Instructions\Switch.cs" Link="Instructions\Switch.cs"/>
-    <Compile Include="..\..\src\Instructions\Unbox.cs" Link="Instructions\Unbox.cs"/>
-    <Compile Include="..\..\src\Instructions\Xor.cs" Link="Instructions\Xor.cs"/>
+    <Compile Include="..\..\src\Context.cs" Link="Context.cs" />
+    <Compile Include="..\..\src\Disassembler.cs" Link="Disassembler.cs" />
+    <Compile Include="..\..\src\GC.cs" Link="GC.cs" />
+    <Compile Include="..\..\src\Prototype.cs" Link="Prototype.cs" />
+    <Compile Include="..\..\src\Signature.cs" Link="Signature.cs" />
+    <Compile Include="..\..\src\ToC.cs" Link="ToC.cs" />
+    <Compile Include="..\..\src\VariableDeclaration.cs" Link="VariableDeclaration.cs" />
+    <Compile Include="..\..\src\Instructions\Add.cs" Link="Instructions\Add.cs" />
+    <Compile Include="..\..\src\Instructions\AddOvf.cs" Link="Instructions\AddOvf.cs" />
+    <Compile Include="..\..\src\Instructions\AddOvfUn.cs" Link="Instructions\AddOvfUn.cs" />
+    <Compile Include="..\..\src\Instructions\And.cs" Link="Instructions\And.cs" />
+    <Compile Include="..\..\src\Instructions\ArgList.cs" Link="Instructions\ArgList.cs" />
+    <Compile Include="..\..\src\Instructions\Box.cs" Link="Instructions\Box.cs" />
+    <Compile Include="..\..\src\Instructions\Br.cs" Link="Instructions\Br.cs" />
+    <Compile Include="..\..\src\Instructions\Break.cs" Link="Instructions\Break.cs" />
+    <Compile Include="..\..\src\Instructions\BrEq.cs" Link="Instructions\BrEq.cs" />
+    <Compile Include="..\..\src\Instructions\BrFalse.cs" Link="Instructions\BrFalse.cs" />
+    <Compile Include="..\..\src\Instructions\BrGe.cs" Link="Instructions\BrGe.cs" />
+    <Compile Include="..\..\src\Instructions\BrGeUn.cs" Link="Instructions\BrGeUn.cs" />
+    <Compile Include="..\..\src\Instructions\BrGt.cs" Link="Instructions\BrGt.cs" />
+    <Compile Include="..\..\src\Instructions\BrGtUn.cs" Link="Instructions\BrGtUn.cs" />
+    <Compile Include="..\..\src\Instructions\BrLe.cs" Link="Instructions\BrLe.cs" />
+    <Compile Include="..\..\src\Instructions\BrLeUn.cs" Link="Instructions\BrLeUn.cs" />
+    <Compile Include="..\..\src\Instructions\BrLt.cs" Link="Instructions\BrLt.cs" />
+    <Compile Include="..\..\src\Instructions\BrLtUn.cs" Link="Instructions\BrLtUn.cs" />
+    <Compile Include="..\..\src\Instructions\BrNeqUn.cs" Link="Instructions\BrNeqUn.cs" />
+    <Compile Include="..\..\src\Instructions\BrTrue.cs" Link="Instructions\BrTrue.cs" />
+    <Compile Include="..\..\src\Instructions\Call.cs" Link="Instructions\Call.cs" />
+    <Compile Include="..\..\src\Instructions\CallI.cs" Link="Instructions\CallI.cs" />
+    <Compile Include="..\..\src\Instructions\CallIProc.cs" Link="Instructions\CallIProc.cs" />
+    <Compile Include="..\..\src\Instructions\CallProc.cs" Link="Instructions\CallProc.cs" />
+    <Compile Include="..\..\src\Instructions\CallVirt.cs" Link="Instructions\CallVirt.cs" />
+    <Compile Include="..\..\src\Instructions\CallVirtProc.cs" Link="Instructions\CallVirtProc.cs" />
+    <Compile Include="..\..\src\Instructions\CastClass.cs" Link="Instructions\CastClass.cs" />
+    <Compile Include="..\..\src\Instructions\Ceq.cs" Link="Instructions\Ceq.cs" />
+    <Compile Include="..\..\src\Instructions\Cgt.cs" Link="Instructions\Cgt.cs" />
+    <Compile Include="..\..\src\Instructions\CgtUn.cs" Link="Instructions\CgtUn.cs" />
+    <Compile Include="..\..\src\Instructions\CkFinite.cs" Link="Instructions\CkFinite.cs" />
+    <Compile Include="..\..\src\Instructions\Clt.cs" Link="Instructions\Clt.cs" />
+    <Compile Include="..\..\src\Instructions\CltUn.cs" Link="Instructions\CltUn.cs" />
+    <Compile Include="..\..\src\Instructions\ConvI.cs" Link="Instructions\ConvI.cs" />
+    <Compile Include="..\..\src\Instructions\ConvI1.cs" Link="Instructions\ConvI1.cs" />
+    <Compile Include="..\..\src\Instructions\ConvI2.cs" Link="Instructions\ConvI2.cs" />
+    <Compile Include="..\..\src\Instructions\ConvI4.cs" Link="Instructions\ConvI4.cs" />
+    <Compile Include="..\..\src\Instructions\ConvI8.cs" Link="Instructions\ConvI8.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI.cs" Link="Instructions\ConvOvfI.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI1.cs" Link="Instructions\ConvOvfI1.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI1Un.cs" Link="Instructions\ConvOvfI1Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI2.cs" Link="Instructions\ConvOvfI2.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI2Un.cs" Link="Instructions\ConvOvfI2Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI4.cs" Link="Instructions\ConvOvfI4.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI4Un.cs" Link="Instructions\ConvOvfI4Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI8.cs" Link="Instructions\ConvOvfI8.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfI8Un.cs" Link="Instructions\ConvOvfI8Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfIUn.cs" Link="Instructions\ConvOvfIUn.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU.cs" Link="Instructions\ConvOvfU.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU1.cs" Link="Instructions\ConvOvfU1.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU1Un.cs" Link="Instructions\ConvOvfU1Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU2.cs" Link="Instructions\ConvOvfU2.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU2Un.cs" Link="Instructions\ConvOvfU2Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU4.cs" Link="Instructions\ConvOvfU4.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU4Un.cs" Link="Instructions\ConvOvfU4Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU8.cs" Link="Instructions\ConvOvfU8.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfU8Un.cs" Link="Instructions\ConvOvfU8Un.cs" />
+    <Compile Include="..\..\src\Instructions\ConvOvfUUn.cs" Link="Instructions\ConvOvfUUn.cs" />
+    <Compile Include="..\..\src\Instructions\ConvR4.cs" Link="Instructions\ConvR4.cs" />
+    <Compile Include="..\..\src\Instructions\ConvR8.cs" Link="Instructions\ConvR8.cs" />
+    <Compile Include="..\..\src\Instructions\ConvRUn.cs" Link="Instructions\ConvRUn.cs" />
+    <Compile Include="..\..\src\Instructions\ConvU.cs" Link="Instructions\ConvU.cs" />
+    <Compile Include="..\..\src\Instructions\ConvU1.cs" Link="Instructions\ConvU1.cs" />
+    <Compile Include="..\..\src\Instructions\ConvU2.cs" Link="Instructions\ConvU2.cs" />
+    <Compile Include="..\..\src\Instructions\ConvU4.cs" Link="Instructions\ConvU4.cs" />
+    <Compile Include="..\..\src\Instructions\ConvU8.cs" Link="Instructions\ConvU8.cs" />
+    <Compile Include="..\..\src\Instructions\CpBlk.cs" Link="Instructions\CpBlk.cs" />
+    <Compile Include="..\..\src\Instructions\CpObj.cs" Link="Instructions\CpObj.cs" />
+    <Compile Include="..\..\src\Instructions\Div.cs" Link="Instructions\Div.cs" />
+    <Compile Include="..\..\src\Instructions\DivUn.cs" Link="Instructions\DivUn.cs" />
+    <Compile Include="..\..\src\Instructions\EndFilter.cs" Link="Instructions\EndFilter.cs" />
+    <Compile Include="..\..\src\Instructions\EndFinally.cs" Link="Instructions\EndFinally.cs" />
+    <Compile Include="..\..\src\Instructions\InitBlk.cs" Link="Instructions\InitBlk.cs" />
+    <Compile Include="..\..\src\Instructions\InitObj.cs" Link="Instructions\InitObj.cs" />
+    <Compile Include="..\..\src\Instructions\Instruction.cs" Link="Instructions\Instruction.cs" />
+    <Compile Include="..\..\src\Instructions\IsInst.cs" Link="Instructions\IsInst.cs" />
+    <Compile Include="..\..\src\Instructions\Jmp.cs" Link="Instructions\Jmp.cs" />
+    <Compile Include="..\..\src\Instructions\LdArg.cs" Link="Instructions\LdArg.cs" />
+    <Compile Include="..\..\src\Instructions\LdArgA.cs" Link="Instructions\LdArgA.cs" />
+    <Compile Include="..\..\src\Instructions\LdcI4.cs" Link="Instructions\LdcI4.cs" />
+    <Compile Include="..\..\src\Instructions\LdcI8.cs" Link="Instructions\LdcI8.cs" />
+    <Compile Include="..\..\src\Instructions\LdcR4.cs" Link="Instructions\LdcR4.cs" />
+    <Compile Include="..\..\src\Instructions\LdcR8.cs" Link="Instructions\LdcR8.cs" />
+    <Compile Include="..\..\src\Instructions\LdElem.cs" Link="Instructions\LdElem.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemA.cs" Link="Instructions\LdElemA.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemI.cs" Link="Instructions\LdElemI.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemI1.cs" Link="Instructions\LdElemI1.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemI2.cs" Link="Instructions\LdElemI2.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemI4.cs" Link="Instructions\LdElemI4.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemI8.cs" Link="Instructions\LdElemI8.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemR4.cs" Link="Instructions\LdElemR4.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemR8.cs" Link="Instructions\LdElemR8.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemRef.cs" Link="Instructions\LdElemRef.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemU1.cs" Link="Instructions\LdElemU1.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemU2.cs" Link="Instructions\LdElemU2.cs" />
+    <Compile Include="..\..\src\Instructions\LdElemU4.cs" Link="Instructions\LdElemU4.cs" />
+    <Compile Include="..\..\src\Instructions\LdFld.cs" Link="Instructions\LdFld.cs" />
+    <Compile Include="..\..\src\Instructions\LdFldA.cs" Link="Instructions\LdFldA.cs" />
+    <Compile Include="..\..\src\Instructions\LdFtn.cs" Link="Instructions\LdFtn.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndI.cs" Link="Instructions\LdIndI.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndI1.cs" Link="Instructions\LdIndI1.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndI2.cs" Link="Instructions\LdIndI2.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndI4.cs" Link="Instructions\LdIndI4.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndI8.cs" Link="Instructions\LdIndI8.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndR4.cs" Link="Instructions\LdIndR4.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndR8.cs" Link="Instructions\LdIndR8.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndRef.cs" Link="Instructions\LdIndRef.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndU1.cs" Link="Instructions\LdIndU1.cs" />
+    <Compile Include="..\..\src\Instructions\LdIndU2.cs" Link="Instructions\LdIndU2.cs" />
+    <Compile Include="..\..\src\Instructions\LdIntU4.cs" Link="Instructions\LdIntU4.cs" />
+    <Compile Include="..\..\src\Instructions\LdLen.cs" Link="Instructions\LdLen.cs" />
+    <Compile Include="..\..\src\Instructions\LdLocA.cs" Link="Instructions\LdLocA.cs" />
+    <Compile Include="..\..\src\Instructions\LdNull.cs" Link="Instructions\LdNull.cs" />
+    <Compile Include="..\..\src\Instructions\LdObj.cs" Link="Instructions\LdObj.cs" />
+    <Compile Include="..\..\src\Instructions\LdSFld.cs" Link="Instructions\LdSFld.cs" />
+    <Compile Include="..\..\src\Instructions\LdSFldA.cs" Link="Instructions\LdSFldA.cs" />
+    <Compile Include="..\..\src\Instructions\LdStr.cs" Link="Instructions\LdStr.cs" />
+    <Compile Include="..\..\src\Instructions\LdToken.cs" Link="Instructions\LdToken.cs" />
+    <Compile Include="..\..\src\Instructions\LdVirtFtn.cs" Link="Instructions\LdVirtFtn.cs" />
+    <Compile Include="..\..\src\Instructions\Leave.cs" Link="Instructions\Leave.cs" />
+    <Compile Include="..\..\src\Instructions\LocAlloc.cs" Link="Instructions\LocAlloc.cs" />
+    <Compile Include="..\..\src\Instructions\MkRefAny.cs" Link="Instructions\MkRefAny.cs" />
+    <Compile Include="..\..\src\Instructions\Mul.cs" Link="Instructions\Mul.cs" />
+    <Compile Include="..\..\src\Instructions\MulOvf.cs" Link="Instructions\MulOvf.cs" />
+    <Compile Include="..\..\src\Instructions\MulOvfUn.cs" Link="Instructions\MulOvfUn.cs" />
+    <Compile Include="..\..\src\Instructions\Neg.cs" Link="Instructions\Neg.cs" />
+    <Compile Include="..\..\src\Instructions\NewArr.cs" Link="Instructions\NewArr.cs" />
+    <Compile Include="..\..\src\Instructions\NewObj.cs" Link="Instructions\NewObj.cs" />
+    <Compile Include="..\..\src\Instructions\Nop.cs" Link="Instructions\Nop.cs" />
+    <Compile Include="..\..\src\Instructions\Not.cs" Link="Instructions\Not.cs" />
+    <Compile Include="..\..\src\Instructions\Or.cs" Link="Instructions\Or.cs" />
+    <Compile Include="..\..\src\Instructions\RefAnyType.cs" Link="Instructions\RefAnyType.cs" />
+    <Compile Include="..\..\src\Instructions\RefAnyVal.cs" Link="Instructions\RefAnyVal.cs" />
+    <Compile Include="..\..\src\Instructions\Rem.cs" Link="Instructions\Rem.cs" />
+    <Compile Include="..\..\src\Instructions\RemUn.cs" Link="Instructions\RemUn.cs" />
+    <Compile Include="..\..\src\Instructions\Ret.cs" Link="Instructions\Ret.cs" />
+    <Compile Include="..\..\src\Instructions\Rethrow.cs" Link="Instructions\Rethrow.cs" />
+    <Compile Include="..\..\src\Instructions\RetVal.cs" Link="Instructions\RetVal.cs" />
+    <Compile Include="..\..\src\Instructions\Shl.cs" Link="Instructions\Shl.cs" />
+    <Compile Include="..\..\src\Instructions\Shr.cs" Link="Instructions\Shr.cs" />
+    <Compile Include="..\..\src\Instructions\ShrUn.cs" Link="Instructions\ShrUn.cs" />
+    <Compile Include="..\..\src\Instructions\SizeOf.cs" Link="Instructions\SizeOf.cs" />
+    <Compile Include="..\..\src\Instructions\StArg.cs" Link="Instructions\StArg.cs" />
+    <Compile Include="..\..\src\Instructions\StElem.cs" Link="Instructions\StElem.cs" />
+    <Compile Include="..\..\src\Instructions\StElemI.cs" Link="Instructions\StElemI.cs" />
+    <Compile Include="..\..\src\Instructions\StElemI1.cs" Link="Instructions\StElemI1.cs" />
+    <Compile Include="..\..\src\Instructions\StElemI2.cs" Link="Instructions\StElemI2.cs" />
+    <Compile Include="..\..\src\Instructions\StElemI4.cs" Link="Instructions\StElemI4.cs" />
+    <Compile Include="..\..\src\Instructions\StElemI8.cs" Link="Instructions\StElemI8.cs" />
+    <Compile Include="..\..\src\Instructions\StElemR4.cs" Link="Instructions\StElemR4.cs" />
+    <Compile Include="..\..\src\Instructions\StElemR8.cs" Link="Instructions\StElemR8.cs" />
+    <Compile Include="..\..\src\Instructions\StElemRef.cs" Link="Instructions\StElemRef.cs" />
+    <Compile Include="..\..\src\Instructions\StException.cs" Link="Instructions\StException.cs" />
+    <Compile Include="..\..\src\Instructions\StFld.cs" Link="Instructions\StFld.cs" />
+    <Compile Include="..\..\src\Instructions\StIndI.cs" Link="Instructions\StIndI.cs" />
+    <Compile Include="..\..\src\Instructions\StIndI1.cs" Link="Instructions\StIndI1.cs" />
+    <Compile Include="..\..\src\Instructions\StIndI2.cs" Link="Instructions\StIndI2.cs" />
+    <Compile Include="..\..\src\Instructions\StIndI4.cs" Link="Instructions\StIndI4.cs" />
+    <Compile Include="..\..\src\Instructions\StIndI8.cs" Link="Instructions\StIndI8.cs" />
+    <Compile Include="..\..\src\Instructions\StIndR4.cs" Link="Instructions\StIndR4.cs" />
+    <Compile Include="..\..\src\Instructions\StIndR8.cs" Link="Instructions\StIndR8.cs" />
+    <Compile Include="..\..\src\Instructions\StIndRef.cs" Link="Instructions\StIndRef.cs" />
+    <Compile Include="..\..\src\Instructions\StLoc.cs" Link="Instructions\StLoc.cs" />
+    <Compile Include="..\..\src\Instructions\StObj.cs" Link="Instructions\StObj.cs" />
+    <Compile Include="..\..\src\Instructions\StSFld.cs" Link="Instructions\StSFld.cs" />
+    <Compile Include="..\..\src\Instructions\Sub.cs" Link="Instructions\Sub.cs" />
+    <Compile Include="..\..\src\Instructions\SubOvf.cs" Link="Instructions\SubOvf.cs" />
+    <Compile Include="..\..\src\Instructions\SubOvfUn.cs" Link="Instructions\SubOvfUn.cs" />
+    <Compile Include="..\..\src\Instructions\Switch.cs" Link="Instructions\Switch.cs" />
+    <Compile Include="..\..\src\Instructions\Throw.cs" Link="Instructions\Throw.cs" />
+    <Compile Include="..\..\src\Instructions\Unbox.cs" Link="Instructions\Unbox.cs" />
+    <Compile Include="..\..\src\Instructions\UnboxAny.cs" Link="Instructions\UnboxAny.cs" />
+    <Compile Include="..\..\src\Instructions\Xor.cs" Link="Instructions\Xor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

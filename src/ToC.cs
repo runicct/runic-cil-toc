@@ -31,6 +31,26 @@ namespace Runic.CIL
 {
     public abstract partial class ToC
     {
+        public class ExceptionHandlingClause
+        {
+            public class Filter : ExceptionHandlingClause
+            {
+                int _filterOffset;
+                internal int FilterOffset { get { return _filterOffset; } }
+                public Filter(int filterOffset, int handlerOffset) : base(handlerOffset) { _filterOffset = filterOffset; }
+            }
+            public class Clause : ExceptionHandlingClause
+            {
+                public Clause(int handlerOffset) : base(handlerOffset) { }
+            }
+            int _handlerOffset;
+            internal int HandlerOffset { get { return _handlerOffset; } }
+
+            internal ExceptionHandlingClause(int handlerOffset)
+            {
+                _handlerOffset = handlerOffset;
+            }
+        }
         public abstract byte[] GetMethodSignature(uint methodToken);
         public abstract uint GetRuntimeTypeHandleToken();
         public abstract byte[] GetFieldSignature(uint fieldToken);
@@ -74,11 +94,15 @@ namespace Runic.CIL
         public virtual string GetValueTypeName(uint typeToken) { return "t_" + typeToken.ToString("X8"); }
         public virtual void Emit(int offset, string code) { Emit(code); }
         public abstract void Emit(string code);
-        public void Process(uint methodToken, byte[] bytecode)
+        public void Process(uint methodToken, byte[] bytecode) { Process(null, methodToken, bytecode); }
+#if NET6_0_OR_GREATER
+        public void Process(ExceptionHandlingClause[]? exceptionHandlingClauses, uint methodToken, byte[] bytecode)
+#else
+        public void Process(ExceptionHandlingClause[] exceptionHandlingClauses, uint methodToken, byte[] bytecode)
+#endif
         {
             Context context = new Context(this);
-            context.Process(methodToken, bytecode);
+            context.Process(exceptionHandlingClauses, methodToken, bytecode);
         }
-        
     }
 }
