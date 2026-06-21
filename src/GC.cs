@@ -32,9 +32,8 @@ namespace Runic.CIL
     {
         internal static class GC
         {
-            public static Dictionary<int, int> CreateGCSlots(ToC.Context context, IReadOnlyList<Instruction> instructions, Dictionary<int, Signature.Type> locals)
+            public static HashSet<int> GetGCLocals(ToC.Context context, IReadOnlyList<Instruction> instructions, Dictionary<int, Signature.Type> locals)
             {
-                Dictionary<int, int> gcslots = new Dictionary<int, int>();
                 HashSet<int> gcvariables = new HashSet<int>();
                 foreach (var kvp in locals)
                 {
@@ -60,11 +59,7 @@ namespace Runic.CIL
                     }
                 }
 
-                foreach (int variable in gcwithslots)
-                {
-                    gcslots.Add(variable, context.NewGCSlot());
-                }
-                return gcslots;
+                return gcvariables;
             }
         }
     }

@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Text;
 using static Runic.CIL.ToC;
+using static Runic.CIL.ToC.Signature;
 
 namespace Runic.CIL
 {
@@ -38,6 +38,8 @@ namespace Runic.CIL
             HashSet<int> _neededLabels = new HashSet<int>();
             Disassembler _disassembler;
             Dictionary<int, Signature.Type> _locals = new Dictionary<int, Signature.Type>();
+            HashSet<uint> _requiredTokens = new HashSet<uint>();
+            public void Requires(uint metadataToken) { if (_requiredTokens.Contains(metadataToken)) { return; } _requiredTokens.Add(metadataToken); _toC.Requires(metadataToken); }
             public Context(ToC toC)
             {
                 _toC = toC;
@@ -45,7 +47,27 @@ namespace Runic.CIL
             }
             internal byte[] GetMethodSignature(uint methodToken) { return _toC.GetMethodSignature(methodToken); }
             internal uint GetRuntimeTypeHandleToken() { return _toC.GetRuntimeTypeHandleToken(); }
-            internal byte[] GetFieldSignature(uint fieldToken) { return _toC.GetFieldSignature(fieldToken); }
+            Dictionary<uint, byte[]> _fieldSignatures = new Dictionary<uint, byte[]>();
+            internal byte[] GetFieldSignature(uint fieldToken) 
+            {
+                byte[] signature;
+                if (_fieldSignatures.TryGetValue(fieldToken, out signature)) { return signature; }
+                signature = _toC.GetFieldSignature(fieldToken);
+                _fieldSignatures.Add(fieldToken, signature);
+                return signature;
+            }
+            Dictionary<uint, Signature.Type> _fieldTypes = new Dictionary<uint, Signature.Type>();
+            internal Signature.Type GetFieldType(uint fieldToken)
+            {
+                Signature.Type type;
+                if (_fieldTypes.TryGetValue(fieldToken, out type)) { return type; }
+                byte[] signature = GetFieldSignature(fieldToken);
+
+                FieldSignature fieldSignature = new Signature.FieldSignature(signature);
+                type = fieldSignature.FieldType;
+                _fieldTypes.Add(fieldToken, type);
+                return type;
+            }
             internal byte[] GetLocalsSignature(uint methodToken) { return _toC.GetLocalsSignature(methodToken); }
             internal uint GetDeclaringType(uint methodToken) { return _toC.GetDeclaringType(methodToken); }
             internal uint GetTypeGenericParameterCount(uint typeToken) { return _toC.GetTypeGenericParameterCount(typeToken); }
@@ -68,14 +90,13 @@ namespace Runic.CIL
             internal string GetGCNewMethod(uint ctorToken) { return _toC.GetGCNewMethod(ctorToken); }
             internal string GetGCNewArrMethod(byte[] elementType) { return _toC.GetGCNewArrMethod(elementType); }
             internal string GetInitObjMethod(byte[] objType) { return _toC.GetInitObjMethod(objType); }
-            internal string GetGCStSlotMethod() { return _toC.GetGCStSlotMethod(); }
-            internal string GetGCLdSlotMethod() { return _toC.GetGCLdSlotMethod(); }
-            internal string GetGCClearSlotMethod() { return _toC.GetGCClearSlotMethod(); }
-            internal string GetGCSetRetSlotMethod() { return _toC.GetGCSetRetSlotMethod(); }
-            internal string GetGCMoveRetSlotMethod() { return _toC.GetGCMoveRetSlotMethod(); }
+            internal string GetGCTrackMethod() { return _toC.GetGCTrackMethod(); }
+            internal string GetGCUntrackMethod() { return _toC.GetGCUntrackMethod(); }
             internal string GetMethodName(uint methodToken) { return _toC.GetMethodName(methodToken); }
-            internal string GetVirtMethodName(uint methodToken) { return _toC.GetVirtMethodName(methodToken); }
-            internal string GetValueTypeName(uint typeToken) { return _toC.GetValueTypeName(typeToken); }
+            internal string GetVirtMethodName(uint methodToken, uint typeToken) { return _toC.GetGCGetVirtMethodName(methodToken, typeToken); }
+            internal string GetTypeName(uint typeToken) { return _toC.GetTypeName(typeToken); }
+            internal string GetStaticFieldName(uint fieldToken) { return _toC.GetStaticFieldName(fieldToken); }
+            internal string GetFieldName(uint fieldToken) { return _toC.GetFieldName(fieldToken); }
             internal string GetGCLdElemI1Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemI1Method(noNullCheck, noBoundCheck); }
             internal string GetGCLdElemU1Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemU1Method(noNullCheck, noBoundCheck); }
             internal string GetGCLdElemI2Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemI2Method(noNullCheck, noBoundCheck); }
@@ -86,6 +107,7 @@ namespace Runic.CIL
             internal string GetGCLdElemIMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemIMethod(noNullCheck, noBoundCheck); }
             internal string GetGCLdElemR4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemR4Method(noNullCheck, noBoundCheck); }
             internal string GetGCLdElemR8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemR8Method(noNullCheck, noBoundCheck); }
+            internal string GetGCLdElemRefMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemRefMethod(noNullCheck, noBoundCheck); }
             internal string GetGCStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, uint typeToken) { return _toC.GetGCStElemMethod(noNullCheck, noTypeCheck, noBoundCheck, typeToken); }
             internal string GetGCStElemIMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemIMethod(noNullCheck, noBoundCheck); }
             internal string GetGCStElemI1Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemI1Method(noNullCheck, noBoundCheck); }
@@ -94,9 +116,12 @@ namespace Runic.CIL
             internal string GetGCStElemI8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemI8Method(noNullCheck, noBoundCheck); }
             internal string GetGCStElemR4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemR4Method(noNullCheck, noBoundCheck); }
             internal string GetGCStElemR8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemR8Method(noNullCheck, noBoundCheck); }
+            internal string GetGCStElemRefMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemRefMethod(noNullCheck, noBoundCheck); }
             internal string GetGCLdFldMethod(bool noNullCheck, bool volatilePrefix, int alignment, uint fieldToken) { return _toC.GetGCLdFldMethod(noNullCheck, volatilePrefix, alignment, fieldToken); }
             internal string GetGCLdLenMethod() { return _toC.GetGCLdLenMethod(); }
+            internal string GetVolatileStoreMethod(byte[] type) { return _toC.GetVolatileStoreMethod(type); }
             internal string GetGCString(uint token) { return _toC.GetGCString(token); }
+            internal string GetGCStringTypeName() { return _toC.GetGCStringTypeName(); }
 #if NET6_0_OR_GREATER
             internal Signature.Type? GetType(int local)
 #else
@@ -114,22 +139,9 @@ namespace Runic.CIL
             internal void NeedLabel(int address) { _neededLabels.Add(address); }
             StringBuilder _currentLine = new StringBuilder();
             internal void EmitLine(string code) { _currentLine.Append(code); }
-            Dictionary<int, int> _gcslots;
-            internal bool IsGCTracked(int local) { return _gcslots.ContainsKey(local); }
-            internal int GetGCSlot(int local) { return _gcslots[local]; }
-            internal IEnumerable<int> GetGCLocals() { return _gcslots.Keys; }
-            internal IEnumerable<int> GetGCSlots() { return _gcslots.Values; }
-
-            static int slotId = 0;
-            internal int NewGCSlot()
-            {
-                lock (this)
-                {
-                    int id = slotId++;
-                    _toC.Emit(0, "static gcslot_t gcslot_" + id.ToString("X8") + ";");
-                    return id;
-                }
-            }
+            HashSet<int> _isGCTracked = new HashSet<int>();
+            internal bool IsGCTracked(int local) { return _isGCTracked.Contains(local); }
+            internal IReadOnlyCollection<int> GetGCLocals() { return _isGCTracked; }
 
 #if NET6_0_OR_GREATER
             public void Process(ExceptionHandlingClause[]? exceptionHandlingClauses, uint methodToken, byte[] bytecode)
@@ -142,13 +154,15 @@ namespace Runic.CIL
                 uint typeGenericParameterCount = 0;
                 uint signatureOffset = 0;
                 Signature.Type[] parameters;
-                Type[] locals;
+                Signature.Type[] locals;
                 byte[] methodSignatureCode = GetMethodSignature(methodToken);
                 Signature.MethodSignature methodSignature = new Signature.MethodSignature(methodSignatureCode);
                 if (methodSignature.HasThis)
                 {
                     Signature.Type[] newParameters = new Signature.Type[methodSignature.ParametersCount + 1];
-                    newParameters[0] = new Signature.Type.Pointer(new Signature.Type.TypeToken(GetDeclaringType(methodToken)));
+                    uint declaringType = GetDeclaringType(methodToken);
+                    if (IsValueType(declaringType)) { newParameters[0] = new Signature.Type.Pointer(new Signature.Type.ValueType(declaringType)); }
+                    else { newParameters[0] = new Signature.Type.TypeToken(declaringType); }
                     for (int n = 0; n < methodSignature.ParametersCount; n++)
                     {
                         newParameters[n + 1] = methodSignature.GetParameterType(n);
@@ -204,10 +218,10 @@ namespace Runic.CIL
                     }
                 }
 
-                if (convertedEhc != null) { _disassembler.Destackify(convertedEhc, methodSignatureCode, localSignatureCode, bytecode); }
-                else { _disassembler.Destackify(methodSignatureCode, localSignatureCode, bytecode); }
+                if (convertedEhc != null) { _disassembler.Destackify(convertedEhc, methodToken, bytecode); }
+                else { _disassembler.Destackify(methodToken, bytecode); }
 
-                _gcslots = GC.CreateGCSlots(this, _disassembler.Instructions, _locals);
+                _isGCTracked = GC.GetGCLocals(this, _disassembler.Instructions, _locals);
                 if (macro)
                 {
                     string macroPrototype = "#define " + name + "(";

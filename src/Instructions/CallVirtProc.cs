@@ -52,7 +52,23 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                string call = context.GetMethodName(_methodToken) + "(";
+#if NET6_0_OR_GREATER
+                Signature.Type.TypeToken? type = context.GetType(_parameters[0]) as Signature.Type.TypeToken;
+#else
+                Signature.Type.TypeToken type = context.GetType(_parameters[0]) as Signature.Type.TypeToken;
+#endif
+
+                byte[] signature = context.GetMethodSignature(_methodToken);
+                Signature.MethodSignature methodSignature = new Signature.MethodSignature(signature);
+                string funcPtrType = Prototype.GetFunctionPointerPrototype(context, methodSignature.ReturnType, true, methodSignature.GetParameters());
+
+
+                uint typetoken = 0;
+                if (type != null) { typetoken = type.Token; }
+                string call = "((" + funcPtrType + ")(" + context.GetVirtMethodName(_methodToken, typetoken) + "(";
+                call += "loc_" + _parameters[0].ToString("X4");
+                call += ")))(";
+
                 for (int n = 0; n < _parameters.Length; n++)
                 {
                     if (n > 0) { call += ", "; }

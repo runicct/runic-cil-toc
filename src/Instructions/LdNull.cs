@@ -44,7 +44,7 @@ namespace Runic.CIL
             {
                 if (context.IsGCTracked(_destination))
                 {
-                    context.EmitLine("loc_" + _destination.ToString("X4") + " = NULL; " + context.GetGCClearSlotMethod() + "(" + context.GetGCSlot(_destination) + ");");
+                    context.EmitLine( context.GetGCUntrackMethod() + "(loc_" + _destination.ToString("X4") + "); loc_" + _destination.ToString("X4") + " = NULL;");
                     return;
                 }
                 context.EmitLine("loc_" + _destination.ToString("X4") + " = NULL;");

@@ -61,7 +61,7 @@ namespace Runic.CIL
                 call += ");";
                 if (context.IsGCTracked(_destination))
                 {
-                    call += " " + context.GetGCMoveRetSlotMethod() + "(gcslot_" + context.GetGCSlot(_destination).ToString("X8") + ");";
+                    call += " " + context.GetGCUntrackMethod() + "(loc_" + _destination.ToString("X4") + ");";
                 }
                 context.EmitLine(call);
             }

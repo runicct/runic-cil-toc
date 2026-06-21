@@ -32,10 +32,32 @@ namespace Runic.CIL
     {
         internal static class Prototype
         {
+            public static string GetFunctionPointerPrototype(ToC.Context context, Signature.Type returnType, bool hasThis, Signature.Type[] parameters)
+            {
+                string prototype = returnType.ToC(context) + " (*)(";
+                if (hasThis) { prototype += "void*"; }
+                for (int n = 0; n < parameters.Length; n++)
+                {
+                    if (n > 0 || hasThis) prototype += ", ";
+                    switch (parameters[n])
+                    {
+                        case Signature.Type.TypeToken _:
+                        case Signature.Type.String _:
+                        case Signature.Type.Object _:
+                            prototype += "void*";
+                            break;
+                        default:
+                            prototype += parameters[n].ToC(context);
+                            break;
+                    }
+                }
+                prototype += ")";
+                return prototype;
+            }
             public static void EmitPrototype(string methodName, uint genericTypeParameterCount, uint genericMethodParameterCount, ToC.Context context, Signature.Type returnType, Signature.Type[] parameters)
             {
                 bool macro = false;
-                string prototype = returnType.ToC(context) + " " + methodName;
+                string prototype = "static " + returnType.ToC(context) + " " + methodName;
                 if (genericTypeParameterCount > 0)
                 {
                     for (int n = 0; n < genericTypeParameterCount; n++)

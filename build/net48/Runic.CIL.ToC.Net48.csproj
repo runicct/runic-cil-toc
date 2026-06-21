@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Runic.CIL.Destackifier, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Runic.CIL.Destackifier.1.0.6\lib\net48\Runic.CIL.Destackifier.dll</HintPath>
+      <HintPath>..\..\packages\Runic.CIL.Destackifier.1.0.11\lib\net48\Runic.CIL.Destackifier.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

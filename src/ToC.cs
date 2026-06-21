@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using static Runic.CIL.ToC;
 using static Runic.CIL.ToC.Signature.Type;
 
@@ -51,6 +52,7 @@ namespace Runic.CIL
                 _handlerOffset = handlerOffset;
             }
         }
+        public virtual void Requires(uint metadataToken) { }
         public abstract byte[] GetMethodSignature(uint methodToken);
         public abstract uint GetRuntimeTypeHandleToken();
         public abstract byte[] GetFieldSignature(uint fieldToken);
@@ -60,12 +62,10 @@ namespace Runic.CIL
         public virtual string GetInitObjMethod(byte[] objType) { return "initobj"; }
         public virtual string GetGCNewMethod(uint ctorToken) { return "gc_new_" + ctorToken.ToString("x8"); }
         public virtual string GetGCNewArrMethod(byte[] elementType) { return "gc_newarr"; }
-        public virtual string GetGCStSlotMethod() { return "gc_stslot"; }
-        public virtual string GetGCLdSlotMethod() { return "gc_ldslot"; }
-        public virtual string GetGCClearSlotMethod() { return "gc_clrslot"; }
-        public virtual string GetGCSetRetSlotMethod() { return "gc_setretslot"; }
-        public virtual string GetGCMoveRetSlotMethod() { return "gc_moveretslot"; }
+        public virtual string GetGCTrackMethod() { return "gc_track"; }
+        public virtual string GetGCUntrackMethod() { return "gc_untrack"; }
         public virtual string GetGCString(uint token) { return "gc_str_" + token.ToString("x8"); }
+        public virtual string GetGCStringTypeName() { return "gc_string"; }
         public virtual string GetGCLdElemI1Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi1"; }
         public virtual string GetGCLdElemU1Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemu1"; }
         public virtual string GetGCLdElemI2Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi2"; }
@@ -76,6 +76,7 @@ namespace Runic.CIL
         public virtual string GetGCLdElemIMethod(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi"; }
         public virtual string GetGCLdElemR4Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemr4"; }
         public virtual string GetGCLdElemR8Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemr8"; }
+        public virtual string GetGCLdElemRefMethod(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemref"; }
         public virtual string GetGCStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, uint typeToken) { return "gc_stelem_" + typeToken.ToString("x8"); }
         public virtual string GetGCStElemIMethod(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi"; }
         public virtual string GetGCStElemI1Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi1"; }
@@ -84,14 +85,18 @@ namespace Runic.CIL
         public virtual string GetGCStElemI8Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi8"; }
         public virtual string GetGCStElemR4Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemr4"; }
         public virtual string GetGCStElemR8Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemr8"; }
+        public virtual string GetGCStElemRefMethod(bool noNullCheck, bool noBoundCheck) { return "gc_stelemref"; }
         public virtual string GetGCBoxMethod(byte[] type) { return "gc_box"; }
         public virtual string GetGCUnboxMethod(byte[] type, bool noTypeCheck) { return "gc_unbox"; }
         public virtual string GetGCLdLenMethod() { return "gc_ldlen"; }
         public virtual string GetGCLdFldMethod(bool noNullCheck, bool volatilePrefix, int alignment, uint fieldToken) { return "gc_ldfld_" + fieldToken.ToString("x8"); }
         public virtual uint GetTypeGenericParameterCount(uint typeToken) { return 0; }
         public virtual string GetMethodName(uint methodToken) { return "m_" + methodToken.ToString("X8"); }
-        public virtual string GetVirtMethodName(uint methodToken) { return "gc_getvirtmethod_" + methodToken.ToString("X8"); }
-        public virtual string GetValueTypeName(uint typeToken) { return "t_" + typeToken.ToString("X8"); }
+        public virtual string GetGCGetVirtMethodName(uint methodToken, uint typeToken) { return "gc_getvirtmethod_" + methodToken.ToString("X8") + "_" + typeToken.ToString("X8"); }
+        public virtual string GetTypeName(uint typeToken) { return "t_" + typeToken.ToString("X8"); }
+        public virtual string GetStaticFieldName(uint fieldToken) { return "f_" + fieldToken.ToString("X8"); }
+        public virtual string GetFieldName(uint fieldToken) { return "f_" + fieldToken.ToString("X8"); }
+        public virtual string GetVolatileStoreMethod(byte[] type) { return "volatile_store"; }
         public virtual void Emit(int offset, string code) { Emit(code); }
         public abstract void Emit(string code);
         public void Process(uint methodToken, byte[] bytecode) { Process(null, methodToken, bytecode); }

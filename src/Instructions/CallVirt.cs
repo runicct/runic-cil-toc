@@ -55,9 +55,22 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetVirtMethodName(_methodToken) + "(";
+#if NET6_0_OR_GREATER
+                Signature.Type.TypeToken? type = context.GetType(_parameters[0]) as Signature.Type.TypeToken;
+#else
+                Signature.Type.TypeToken type = context.GetType(_parameters[0]) as Signature.Type.TypeToken;
+#endif
+
+                byte[] signature = context.GetMethodSignature(_methodToken);
+                Signature.MethodSignature methodSignature = new Signature.MethodSignature(signature);
+                string funcPtrType = Prototype.GetFunctionPointerPrototype(context,methodSignature.ReturnType, true, methodSignature.GetParameters());
+
+
+                uint typetoken = 0;
+                if (type != null) { typetoken = type.Token; }
+                string call = "loc_" + _destination.ToString("X4") + " = ((" + funcPtrType + ")(" + context.GetVirtMethodName(_methodToken, typetoken) + "(";
                 call += "loc_" + _parameters[0].ToString("X4");
-                call += ")(";
+                call += ")))(";
 
                 for (int n = 0; n < _parameters.Length; n++)
                 {
@@ -65,10 +78,6 @@ namespace Runic.CIL
                     call += "loc_" + _parameters[n].ToString("X4");
                 }
                 call += ");";
-                if (context.IsGCTracked(_destination))
-                {
-                    call += " " + context.GetGCMoveRetSlotMethod() + "(gcslot_" + context.GetGCSlot(_destination).ToString("X8") + ");";
-                }
                 context.EmitLine(call);
             }
         }

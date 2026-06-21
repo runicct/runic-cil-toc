@@ -83,7 +83,7 @@ namespace Runic.CIL
                     static Void _instance = new Void();
                     public static Void Instance { get { return _instance; } }
                     public override void Emit(List<byte> output) { output.Add(0x01); }
-                    public override string ToC(Context context) { return "void*"; }
+                    public override string ToC(Context context) { return "void"; }
                     public override Signature.Type ToUnsigned() { return Type.NUInt.Instance; }
                 }
                 internal class Object : Type
@@ -203,7 +203,7 @@ namespace Runic.CIL
                     static String _instance = new String();
                     public static String Instance { get { return _instance; } }
                     public override void Emit(List<byte> output) { output.Add(0x0E); }
-                    public override string ToC(Context context) { return "gc_string"; }
+                    public override string ToC(Context context) { return context.GetGCStringTypeName() + "*"; }
                     public override Signature.Type ToUnsigned() { return Type.NUInt.Instance; }
                 }
                 internal class Pointer : Type
@@ -234,6 +234,7 @@ namespace Runic.CIL
                 internal class TypeToken : Type
                 {
                     uint _token;
+                    public uint Token { get { return _token; } }
                     public TypeToken(uint token)
                     {
                         _token = token;
@@ -243,7 +244,7 @@ namespace Runic.CIL
                         output.Add(0x12);
                         EncodeCompressedInteger(TokenToTypeDefOrRefOrSpec(_token), output);
                     }
-                    public override string ToC(Context context) { return "void*"; }
+                    public override string ToC(Context context) { return context.GetTypeName(_token) + "*"; }
                     public override Signature.Type ToUnsigned() { return Type.NUInt.Instance; }
                 }
                 internal class ArrayType : Type
@@ -323,7 +324,7 @@ namespace Runic.CIL
                         output.Add(0x11);
                         EncodeCompressedInteger(TokenToTypeDefOrRefOrSpec(_token), output);
                     }
-                    public override string ToC(Context context) { return context.GetValueTypeName(_token); }
+                    public override string ToC(Context context) { return context.GetTypeName(_token); }
                 }
                 internal class Sentinel : Type
                 {
@@ -428,6 +429,7 @@ namespace Runic.CIL
                 Signature.Type _returnType;
                 public Signature.Type ReturnType { get { return _returnType; } }
                 Signature.Type[] _parameters;
+                public Signature.Type[] GetParameters() { return _parameters; }
                 public Signature.Type GetParameterType(int index)
                 {
                     if (index < 0 || index >= _parametersCount) { return Signature.Type.Unknown.Instance; }
@@ -507,12 +509,8 @@ namespace Runic.CIL
                         _fieldType = Signature.Type.Unknown.Instance;
                         return;
                     }
-                    uint fieldSignatureByteIndex = 0;
-                    byte flag = signature[fieldSignatureByteIndex];
-                    fieldSignatureByteIndex++;
-                    if ((flag & 0x20) != 0) { throw new ArgumentException("Invalid field signature"); }
-                    if ((flag & 0x40) != 0) { throw new ArgumentException("Invalid field signature"); }
-                    if ((flag & 0x10) != 0) { throw new ArgumentException("Invalid field signature"); }
+                    uint fieldSignatureByteIndex = 1;
+                    if (signature[0] != 0x06) { throw new Exception("Invalid field signature"); }
                     _fieldType = DecodeType(signature, ref fieldSignatureByteIndex);
                 }
             }

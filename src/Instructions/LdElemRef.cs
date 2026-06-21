@@ -52,6 +52,10 @@ namespace Runic.CIL
                 _array = array;
                 _index = index;
             }
+            public override void ToC(Context context)
+            {
+                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetGCLdElemRefMethod(_noNullCheck, _noBoundCheck) + "(loc_" + _array.ToString("X4") + ", loc_" + _index.ToString("X4") + ");");
+            }
         }
     }
 }

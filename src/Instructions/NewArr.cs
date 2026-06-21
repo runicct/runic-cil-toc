@@ -48,7 +48,6 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                int slot = context.GetGCSlot(_destination);
 #if NET6_0_OR_GREATER
                 Signature.Type.ArrayType? arrayType = context.GetType(_destination) as Signature.Type.ArrayType;
                 Signature.Type? elementType = Signature.Type.Unknown.Instance;
@@ -61,9 +60,7 @@ namespace Runic.CIL
                 elementType.Emit(elementTypeSig);
 
 
-                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetGCNewArrMethod(elementTypeSig.ToArray()) + "(";
-                call += "gcslot_" + slot.ToString("X8");
-                call += ", loc_";
+                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetGCNewArrMethod(elementTypeSig.ToArray()) + "(loc_";
                 call += _size.ToString("X4");
                 call += ");";
                 context.EmitLine(call);

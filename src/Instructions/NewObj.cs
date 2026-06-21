@@ -48,13 +48,9 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                int slot = context.GetGCSlot(_destination);
-
                 string call = "loc_" + _destination.ToString("X4") + " = " + context.GetGCNewMethod(_ctorToken) + "(";
-                call += "gcslot_" + slot.ToString("X8");
                 for (int n = 0; n < _parameters.Length; n++)
                 {
-                    call += ", ";
                     call += "loc_" + _parameters[n].ToString("X4");
                 }
                 call += ");";

@@ -43,13 +43,10 @@ namespace Runic.CIL
             public override void ToC(Context context)
             {
                 string line = "";
-                if (context.IsGCTracked(_value))
+                foreach (int gclocal in context.GetGCLocals())
                 {
-                    line += "gc_stretslot(loc_" + _value.ToString("X4") + "); ";
-                }
-                foreach (int gclocal in context.GetGCSlots())
-                {
-                    line += context.GetGCClearSlotMethod() + "(gcslot_" + gclocal.ToString("X8") + "); ";
+                    if (_value == gclocal) { continue; }
+                    line += context.GetGCUntrackMethod() + "(loc_" + gclocal.ToString("X4") + "); ";
                 }
 
                 context.EmitLine(line + "return loc_" + _value.ToString("X4") + ";");

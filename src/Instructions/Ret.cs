@@ -41,9 +41,9 @@ namespace Runic.CIL
             {
                 string line = "";
 
-                foreach (int gcslot in context.GetGCSlots())
+                foreach (int gclocal in context.GetGCLocals())
                 {
-                    line += context.GetGCClearSlotMethod() + "(gcslot_" + gcslot.ToString("X8") + "); ";
+                    line += context.GetGCUntrackMethod() + "(loc_" + gclocal.ToString("X4") + "); ";
                 }
                 context.EmitLine(line + "return;");
             }

@@ -46,6 +46,18 @@ namespace Runic.CIL
                 _fieldToken = fieldToken;
                 _value = value;
             }
+            public override void ToC(Context context)
+            {
+                Signature.Type type = context.GetFieldType(_fieldToken);
+                string fieldName = context.GetStaticFieldName(_fieldToken);
+                if (!_volatilePrefix) { context.EmitLine(fieldName + " = (" + type.ToC(context) + ")loc_" + _value.ToString("X4") + ";"); }
+                else 
+                {
+                    List<byte> typeSignature = new List<byte>(); type.Emit(typeSignature);
+                    string volatileStoreFunction = context.GetVolatileStoreMethod(typeSignature.ToArray());
+                    context.EmitLine(volatileStoreFunction + "(&" + fieldName + ", &loc_" + _value.ToString("X4") + ");"); 
+                }
+            }
         }
     }
 }

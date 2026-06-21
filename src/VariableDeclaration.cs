@@ -36,14 +36,7 @@ namespace Runic.CIL
             {
                 foreach (var kvp in locals)
                 {
-                    if (context.IsGCTracked(kvp.Key))
-                    {
-                        context.Parent.Emit(0, "    void* loc_" + kvp.Key.ToString("X4") + ";");
-                    }
-                    else
-                    {
-                        context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";");
-                    }
+                    context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";");
                 }
             }
         }

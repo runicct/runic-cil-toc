@@ -45,13 +45,20 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
+                if (context.IsGCTracked(_destination))
+                {
+                    context.EmitLine(context.GetGCTrackMethod() + "(arg_" + _source.ToString("X4") + "); " + context.GetGCUntrackMethod() + "(loc_" + _destination.ToString("X4") + "); loc_" + _destination.ToString("X4") + " = arg_" + _source.ToString("X4") + ";");
+                }
+                else
+                {
 #if NET6_0_OR_GREATER
-                Signature.Type? type = context.GetType(_destination);
+                    Signature.Type? type = context.GetType(_destination);
 #else
-                Signature.Type type = context.GetType(_destination);
+                    Signature.Type type = context.GetType(_destination);
 #endif
-                if (type != null) { context.EmitLine("loc_" + _destination.ToString("X4") + " = (" + type.ToC(context) + ")(arg_" + _source.ToString("X4") + ");"); }
-                else { context.EmitLine("loc_" + _destination.ToString("X4") + " = arg_" + _source.ToString("X4") + ";"); }
+                    if (type != null) { context.EmitLine("loc_" + _destination.ToString("X4") + " = (" + type.ToC(context) + ")(arg_" + _source.ToString("X4") + ");"); }
+                    else { context.EmitLine("loc_" + _destination.ToString("X4") + " = arg_" + _source.ToString("X4") + ";"); }
+                }
             }
         }
     }
