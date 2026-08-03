@@ -68,7 +68,7 @@ namespace Runic.CIL
                 List<byte> typeEncoding = new List<byte>();
                 type.Emit(typeEncoding);
 
-                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetGCBoxMethod(typeEncoding.ToArray()) + "(loc_" + _source.ToString("X4") + ");");
+                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetBoxMethod(typeEncoding.ToArray()) + "(loc_" + _source.ToString("X4") + ");");
             }
         }
     }

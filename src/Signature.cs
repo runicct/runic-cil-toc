@@ -90,6 +90,8 @@ namespace Runic.CIL
                 {
                     static Object _instance = new Object();
                     public static Object Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x1C };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x1C); }
                     public override string ToC(Context context) { return "void*"; }
                     public override Signature.Type ToUnsigned() { return Type.NUInt.Instance; }
@@ -98,6 +100,8 @@ namespace Runic.CIL
                 {
                     static Bool _instance = new Bool();
                     public static Bool Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x02 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x02); }
                     public override string ToC(Context context) { return "uint32_t"; }
                 }
@@ -105,6 +109,8 @@ namespace Runic.CIL
                 {
                     static Char _instance = new Char();
                     public static Char Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x03 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x03); }
                     public override string ToC(Context context) { return "uint16_t"; }
                 }
@@ -112,6 +118,8 @@ namespace Runic.CIL
                 {
                     static UInt64 _instance = new UInt64();
                     public static UInt64 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x0B };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x0B); }
                     public override string ToC(Context context) { return "uint64_t"; }
                 }
@@ -119,6 +127,8 @@ namespace Runic.CIL
                 {
                     static Int64 _instance = new Int64();
                     public static Int64 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x0A };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x0A); }
                     public override string ToC(Context context) { return "int64_t"; }
                     public override Signature.Type ToUnsigned() { return Type.UInt64.Instance; }
@@ -127,6 +137,8 @@ namespace Runic.CIL
                 {
                     static UInt32 _instance = new UInt32();
                     public static UInt32 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x09 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x09); }
                     public override string ToC(Context context) { return "uint32_t"; }
 
@@ -135,6 +147,8 @@ namespace Runic.CIL
                 {
                     static Int32 _instance = new Int32();
                     public static Int32 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x08 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x08); }
                     public override string ToC(Context context) { return "int32_t"; }
                     public override Signature.Type ToUnsigned() { return Type.UInt32.Instance; }
@@ -143,6 +157,8 @@ namespace Runic.CIL
                 {
                     static UInt16 _instance = new UInt16();
                     public static UInt16 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x07 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x07); }
                     public override string ToC(Context context) { return "uint16_t"; }
                     public override Signature.Type ToUnsigned() { return Type.UInt16.Instance; }
@@ -151,6 +167,8 @@ namespace Runic.CIL
                 {
                     static Int16 _instance = new Int16();
                     public static Int16 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x06 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x06); }
                     public override string ToC(Context context) { return "int16_t"; }
                 }
@@ -158,6 +176,8 @@ namespace Runic.CIL
                 {
                     static UInt8 _instance = new UInt8();
                     public static UInt8 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x05 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x05); }
                     public override string ToC(Context context) { return "uint8_t"; }
                 }
@@ -165,6 +185,8 @@ namespace Runic.CIL
                 {
                     static Int8 _instance = new Int8();
                     public static Int8 Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x04 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x04); }
                     public override string ToC(Context context) { return "int8_t"; }
                     public override Signature.Type ToUnsigned() { return Type.UInt8.Instance; }
@@ -173,6 +195,8 @@ namespace Runic.CIL
                 {
                     static Float _instance = new Float();
                     public static Float Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x0C };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x0C); }
                     public override string ToC(Context context) { return "float"; }
                 }
@@ -180,6 +204,8 @@ namespace Runic.CIL
                 {
                     static Double _instance = new Double();
                     public static Double Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x0D };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x0D); }
                     public override string ToC(Context context) { return "double"; }
                 }
@@ -187,6 +213,8 @@ namespace Runic.CIL
                 {
                     static NInt _instance = new NInt();
                     public static NInt Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x18 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x18); }
                     public override string ToC(Context context) { return "intptr_t"; }
                     public override Signature.Type ToUnsigned() { return Type.NUInt.Instance; }
@@ -195,6 +223,8 @@ namespace Runic.CIL
                 {
                     static NUInt _instance = new NUInt();
                     public static NUInt Instance { get { return _instance; } }
+                    static byte[] _standaloneSignature = new byte[] { 0x19 };
+                    public static byte[] StandaloneSignature { get { return _standaloneSignature; } }
                     public override void Emit(List<byte> output) { output.Add(0x19); }
                     public override string ToC(Context context) { return "uintptr_t"; }
                 }
@@ -203,7 +233,7 @@ namespace Runic.CIL
                     static String _instance = new String();
                     public static String Instance { get { return _instance; } }
                     public override void Emit(List<byte> output) { output.Add(0x0E); }
-                    public override string ToC(Context context) { return context.GetGCStringTypeName() + "*"; }
+                    public override string ToC(Context context) { return context.GetStringTypeName() + "*"; }
                     public override Signature.Type ToUnsigned() { return Type.NUInt.Instance; }
                 }
                 internal class Pointer : Type

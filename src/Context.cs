@@ -85,43 +85,27 @@ namespace Runic.CIL
                     _locals.Add(local, localType);
                 }
             }
-            internal string GetGCBoxMethod(byte[] valueType) { return _toC.GetGCBoxMethod(valueType); }
-            internal string GetGCUnboxMethod(byte[] type, bool noTypeCheck) { return _toC.GetGCUnboxMethod(type, noTypeCheck); }
-            internal string GetGCNewMethod(uint ctorToken) { return _toC.GetGCNewMethod(ctorToken); }
-            internal string GetGCNewArrMethod(byte[] elementType) { return _toC.GetGCNewArrMethod(elementType); }
+            internal string GetBoxMethod(byte[] valueType) { return _toC.GetBoxMethod(valueType); }
+            internal string GetUnboxMethod(byte[] type, bool noTypeCheck) { return _toC.GetUnboxMethod(type, noTypeCheck); }
+            internal string GetNewMethod(uint ctorToken) { return _toC.GetNewMethod(ctorToken); }
+            internal string GetNewArrMethod(byte[] elementType) { return _toC.GetNewArrMethod(elementType); }
             internal string GetInitObjMethod(byte[] objType) { return _toC.GetInitObjMethod(objType); }
             internal string GetGCTrackMethod() { return _toC.GetGCTrackMethod(); }
             internal string GetGCUntrackMethod() { return _toC.GetGCUntrackMethod(); }
             internal string GetMethodName(uint methodToken) { return _toC.GetMethodName(methodToken); }
-            internal string GetVirtMethodName(uint methodToken, uint typeToken) { return _toC.GetGCGetVirtMethodName(methodToken, typeToken); }
+            internal string GetLdVirtMethodName(uint methodToken, uint typeToken) { return _toC.GetLdVirtMethodName(methodToken, typeToken); }
             internal string GetTypeName(uint typeToken) { return _toC.GetTypeName(typeToken); }
-            internal string GetStaticFieldName(uint fieldToken) { return _toC.GetStaticFieldName(fieldToken); }
-            internal string GetFieldName(uint fieldToken) { return _toC.GetFieldName(fieldToken); }
-            internal string GetGCLdElemI1Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemI1Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemU1Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemU1Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemI2Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemI2Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemU2Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemU2Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemI4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemI4Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemU4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemU4Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemI8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemI8Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemIMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemIMethod(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemR4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemR4Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemR8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemR8Method(noNullCheck, noBoundCheck); }
-            internal string GetGCLdElemRefMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCLdElemRefMethod(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, uint typeToken) { return _toC.GetGCStElemMethod(noNullCheck, noTypeCheck, noBoundCheck, typeToken); }
-            internal string GetGCStElemIMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemIMethod(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemI1Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemI1Method(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemI2Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemI2Method(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemI4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemI4Method(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemI8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemI8Method(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemR4Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemR4Method(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemR8Method(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemR8Method(noNullCheck, noBoundCheck); }
-            internal string GetGCStElemRefMethod(bool noNullCheck, bool noBoundCheck) { return _toC.GetGCStElemRefMethod(noNullCheck, noBoundCheck); }
-            internal string GetGCLdFldMethod(bool noNullCheck, bool volatilePrefix, int alignment, uint fieldToken) { return _toC.GetGCLdFldMethod(noNullCheck, volatilePrefix, alignment, fieldToken); }
-            internal string GetGCLdLenMethod() { return _toC.GetGCLdLenMethod(); }
-            internal string GetVolatileStoreMethod(byte[] type) { return _toC.GetVolatileStoreMethod(type); }
-            internal string GetGCString(uint token) { return _toC.GetGCString(token); }
-            internal string GetGCStringTypeName() { return _toC.GetGCStringTypeName(); }
+            internal string GetLdFldMethodName(uint fieldToken) { return _toC.GetLdFldMethodName(fieldToken); }
+            internal string GetLdFldAMethodName(uint fieldToken) { return _toC.GetLdFldAMethodName(fieldToken); }
+            internal string GetStFldMethodName(uint fieldToken) { return _toC.GetStFldMethodName(fieldToken); }
+            internal string GetLdSFldMethodName(uint fieldToken) { return _toC.GetLdSFldMethodName(fieldToken); }
+            internal string GetLdSFldAMethodName(uint fieldToken) { return _toC.GetLdSFldAMethodName(fieldToken); }
+            internal string GetStSFldMethodName(uint fieldToken) { return _toC.GetStSFldMethodName(fieldToken); }
+            internal string GetLdElemMethod(bool noNullCheck, bool noBoundCheck, byte[] elementType) { return _toC.GetLdElemMethod(noNullCheck, noBoundCheck, elementType); }
+            internal string GetStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, byte[] elementType) { return _toC.GetStElemMethod(noNullCheck, noTypeCheck, noBoundCheck, elementType); }
+            internal string GetLdLenMethod() { return _toC.GetLdLenMethod(); }
+            internal string GetString(uint token) { return _toC.GetString(token); }
+            internal string GetStringTypeName() { return _toC.GetStringTypeName(); }
 #if NET6_0_OR_GREATER
             internal Signature.Type? GetType(int local)
 #else
@@ -231,7 +215,7 @@ namespace Runic.CIL
                 Prototype.EmitPrototype(name, typeGenericParameterCount, methodSignature.GenericParametersCount, this, methodSignature.ReturnType, parameters);
                 if (macro) { _toC.Emit(0, "{ \\"); }
                 else { _toC.Emit(0, "{"); }
-                VariableDeclaration.EmitLocals(this, _locals);
+                VariableDeclaration.EmitLocals(this, _locals, true);
                 for (int n = 0; n < _disassembler.Instructions.Count; n++)
                 {
                     int offset = _disassembler.Instructions[n].Offset;

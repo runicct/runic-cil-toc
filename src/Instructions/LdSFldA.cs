@@ -43,6 +43,17 @@ namespace Runic.CIL
                 _fieldToken = fieldToken;
                 _destination = destination;
             }
+            public override void ToC(Context context)
+            {
+                if (context.IsGCTracked(_destination))
+                {
+                    context.EmitLine(context.GetGCUntrackMethod() + "(loc_" + _destination.ToString("X4") + "); loc_" + _destination.ToString("X4") + " = " + context.GetLdSFldAMethodName(_fieldToken) + "();");
+                }
+                else
+                {
+                    context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetLdSFldAMethodName(_fieldToken) + "();");
+                }
+            }
         }
     }
 }

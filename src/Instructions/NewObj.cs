@@ -48,7 +48,7 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetGCNewMethod(_ctorToken) + "(";
+                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetNewMethod(_ctorToken) + "(";
                 for (int n = 0; n < _parameters.Length; n++)
                 {
                     call += "loc_" + _parameters[n].ToString("X4");

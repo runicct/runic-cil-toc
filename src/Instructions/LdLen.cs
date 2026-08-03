@@ -45,7 +45,7 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetGCLdLenMethod() + "(loc_" + _array.ToString("X4") + ");");
+                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetLdLenMethod() + "(loc_" + _array.ToString("X4") + ");");
             }
         }
     }

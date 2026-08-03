@@ -59,7 +59,21 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                context.EmitLine(context.GetGCStElemMethod(_noNullCheck, _noTypeCheck, _noBoundCheck, _typeToken) + "(loc_" + _array.ToString("X4") + ", loc_" + _index.ToString("X4") + ", loc_" + _value.ToString("X4") + ");");
+                bool isValueType = context.IsValueType(_typeToken);
+                byte[] signature;
+                if (isValueType)
+                {
+                    List<byte> sig = new List<byte>();
+                    (new Signature.Type.ValueType(_typeToken)).Emit(sig);
+                    signature = sig.ToArray();
+                }
+                else
+                {
+                    List<byte> sig = new List<byte>();
+                    (new Signature.Type.TypeToken(_typeToken)).Emit(sig);
+                    signature = sig.ToArray();
+                }
+                context.EmitLine(context.GetStElemMethod(_noNullCheck, _noTypeCheck, _noBoundCheck, signature) + "(loc_" + _array.ToString("X4") + ", loc_" + _index.ToString("X4") + ", loc_" + _value.ToString("X4") + ");");
             }
         }
     }

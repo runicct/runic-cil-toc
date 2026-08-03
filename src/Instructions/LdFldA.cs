@@ -48,15 +48,7 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-#if NET6_0_OR_GREATER
-                Signature.Type? type = context.GetType(_destination);
-#else
-                Signature.Type type = context.GetType(_destination);
-#endif
-                string fieldName = context.GetFieldName(_fieldToken);
-                if (type == null) { context.EmitLine("loc_" + _destination.ToString("X4") + " = &loc_" + _object.ToString("X4") + ";"); }
-                else { context.EmitLine("loc_" + _destination.ToString("X4") + " = (" + type.ToC(context) + ")&loc_" + _object.ToString("X4") + ";"); }
-                
+                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetLdFldAMethodName(_fieldToken) + ";");
             }
         }
     }

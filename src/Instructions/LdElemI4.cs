@@ -54,7 +54,7 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetGCLdElemI4Method(_noNullCheck, _noBoundCheck) + "(loc_" + _array.ToString("X4") + ", loc_" + _index.ToString("X4") + ");");
+                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetLdElemMethod(_noNullCheck, _noBoundCheck, Signature.Type.Int32.StandaloneSignature) + "(loc_" + _array.ToString("X4") + ", loc_" + _index.ToString("X4") + ");");
             }
         }
     }

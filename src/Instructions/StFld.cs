@@ -57,18 +57,7 @@ namespace Runic.CIL
             }
             public override void ToC(Context context)
             {
-                Signature.Type type = context.GetFieldType(_fieldToken);
-                string fieldName = context.GetFieldName(_fieldToken);
-                if (!_volatilePrefix) 
-                {
-                    context.EmitLine("loc_" + _object.ToString("X4") + "->" + fieldName + " = (" + type.ToC(context) + ")loc_" + _value.ToString("X4") + ";");
-                }
-                else
-                {
-                    List<byte> typeSignature = new List<byte>(); type.Emit(typeSignature);
-                    string volatileStoreFunction = context.GetVolatileStoreMethod(typeSignature.ToArray());
-                    context.EmitLine(volatileStoreFunction + "(&(loc_" + _object.ToString("X4") + "->" + fieldName + "), &loc_" + _value.ToString("X4") + ");");
-                }
+                context.EmitLine(context.GetStFldMethodName(_fieldToken) + "(" + (_volatilePrefix ? "1" : "0") + ", loc_" + _object.ToString("X4") + ", loc_" + _value.ToString("X4") + ")");
             }
         }
     }

@@ -60,7 +60,7 @@ namespace Runic.CIL
                 elementType.Emit(elementTypeSig);
 
 
-                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetGCNewArrMethod(elementTypeSig.ToArray()) + "(loc_";
+                string call = "loc_" + _destination.ToString("X4") + " = " + context.GetNewArrMethod(elementTypeSig.ToArray()) + "(loc_";
                 call += _size.ToString("X4");
                 call += ");";
                 context.EmitLine(call);

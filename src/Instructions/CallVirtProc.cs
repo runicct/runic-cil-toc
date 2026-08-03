@@ -65,7 +65,7 @@ namespace Runic.CIL
 
                 uint typetoken = 0;
                 if (type != null) { typetoken = type.Token; }
-                string call = "((" + funcPtrType + ")(" + context.GetVirtMethodName(_methodToken, typetoken) + "(";
+                string call = "((" + funcPtrType + ")(" + context.GetLdVirtMethodName(_methodToken, typetoken) + "(";
                 call += "loc_" + _parameters[0].ToString("X4");
                 call += ")))(";
 

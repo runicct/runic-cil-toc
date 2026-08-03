@@ -60,43 +60,27 @@ namespace Runic.CIL
         public abstract uint GetDeclaringType(uint methodToken);
         public abstract bool IsValueType(uint typeToken);
         public virtual string GetInitObjMethod(byte[] objType) { return "initobj"; }
-        public virtual string GetGCNewMethod(uint ctorToken) { return "gc_new_" + ctorToken.ToString("x8"); }
-        public virtual string GetGCNewArrMethod(byte[] elementType) { return "gc_newarr"; }
+        public virtual string GetNewMethod(uint ctorToken) { return "new_" + ctorToken.ToString("x8"); }
+        public virtual string GetNewArrMethod(byte[] elementType) { return "newarr"; }
         public virtual string GetGCTrackMethod() { return "gc_track"; }
         public virtual string GetGCUntrackMethod() { return "gc_untrack"; }
-        public virtual string GetGCString(uint token) { return "gc_str_" + token.ToString("x8"); }
-        public virtual string GetGCStringTypeName() { return "gc_string"; }
-        public virtual string GetGCLdElemI1Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi1"; }
-        public virtual string GetGCLdElemU1Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemu1"; }
-        public virtual string GetGCLdElemI2Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi2"; }
-        public virtual string GetGCLdElemU2Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemu2"; }
-        public virtual string GetGCLdElemI4Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi4"; }
-        public virtual string GetGCLdElemU4Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemu4"; }
-        public virtual string GetGCLdElemI8Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi8"; }
-        public virtual string GetGCLdElemIMethod(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemi"; }
-        public virtual string GetGCLdElemR4Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemr4"; }
-        public virtual string GetGCLdElemR8Method(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemr8"; }
-        public virtual string GetGCLdElemRefMethod(bool noNullCheck, bool noBoundCheck) { return "gc_ldelemref"; }
-        public virtual string GetGCStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, uint typeToken) { return "gc_stelem_" + typeToken.ToString("x8"); }
-        public virtual string GetGCStElemIMethod(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi"; }
-        public virtual string GetGCStElemI1Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi1"; }
-        public virtual string GetGCStElemI2Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi2"; }
-        public virtual string GetGCStElemI4Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi4"; }
-        public virtual string GetGCStElemI8Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemi8"; }
-        public virtual string GetGCStElemR4Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemr4"; }
-        public virtual string GetGCStElemR8Method(bool noNullCheck, bool noBoundCheck) { return "gc_stelemr8"; }
-        public virtual string GetGCStElemRefMethod(bool noNullCheck, bool noBoundCheck) { return "gc_stelemref"; }
-        public virtual string GetGCBoxMethod(byte[] type) { return "gc_box"; }
-        public virtual string GetGCUnboxMethod(byte[] type, bool noTypeCheck) { return "gc_unbox"; }
-        public virtual string GetGCLdLenMethod() { return "gc_ldlen"; }
-        public virtual string GetGCLdFldMethod(bool noNullCheck, bool volatilePrefix, int alignment, uint fieldToken) { return "gc_ldfld_" + fieldToken.ToString("x8"); }
+        public virtual string GetString(uint token) { return "const_string_" + token.ToString("x8"); }
+        public virtual string GetStringTypeName() { return "string"; }
+        public virtual string GetLdElemMethod(bool noNullCheck, bool noBoundCheck, byte[] elementType) { return "ldelem"; }
+        public virtual string GetStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, byte[] elementType) { return "stelem"; }
+        public virtual string GetBoxMethod(byte[] type) { return "box"; }
+        public virtual string GetUnboxMethod(byte[] type, bool noTypeCheck) { return "unbox"; }
+        public virtual string GetLdLenMethod() { return "ldlen"; }
         public virtual uint GetTypeGenericParameterCount(uint typeToken) { return 0; }
         public virtual string GetMethodName(uint methodToken) { return "m_" + methodToken.ToString("X8"); }
-        public virtual string GetGCGetVirtMethodName(uint methodToken, uint typeToken) { return "gc_getvirtmethod_" + methodToken.ToString("X8") + "_" + typeToken.ToString("X8"); }
+        public virtual string GetLdVirtMethodName(uint methodToken, uint typeToken) { return "ldvirtmethod_" + methodToken.ToString("X8") + "_" + typeToken.ToString("X8"); }
         public virtual string GetTypeName(uint typeToken) { return "t_" + typeToken.ToString("X8"); }
-        public virtual string GetStaticFieldName(uint fieldToken) { return "f_" + fieldToken.ToString("X8"); }
-        public virtual string GetFieldName(uint fieldToken) { return "f_" + fieldToken.ToString("X8"); }
-        public virtual string GetVolatileStoreMethod(byte[] type) { return "volatile_store"; }
+        public virtual string GetLdFldMethodName(uint fieldToken) { return "ldfld_" + fieldToken.ToString("X8"); }
+        public virtual string GetLdFldAMethodName(uint fieldToken) { return "ldflda_" + fieldToken.ToString("X8"); }
+        public virtual string GetStFldMethodName(uint fieldToken) { return "stfld_" + fieldToken.ToString("X8"); }
+        public virtual string GetStSFldMethodName(uint fieldToken) { return "stsfld_" + fieldToken.ToString("X8"); }
+        public virtual string GetLdSFldMethodName(uint fieldToken) { return "ldsfld_" + fieldToken.ToString("X8"); }
+        public virtual string GetLdSFldAMethodName(uint fieldToken) { return "ldsflda_" + fieldToken.ToString("X8"); }
         public virtual void Emit(int offset, string code) { Emit(code); }
         public abstract void Emit(string code);
         public void Process(uint methodToken, byte[] bytecode) { Process(null, methodToken, bytecode); }
