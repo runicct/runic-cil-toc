@@ -155,7 +155,7 @@ namespace Runic.CIL
             public override void LdElemR8(int offset, bool noNullCheck, bool noBoundCheck, int destination, int array, int index) { _instructions.Add(new LdElemR8(offset, noNullCheck, noBoundCheck, destination, array, index)); }
             public override void LdElemI(int offset, bool noNullCheck, bool noBoundCheck, int destination, int array, int index) { _instructions.Add(new LdElemI(offset, noNullCheck, noBoundCheck, destination, array, index)); }
             public override void LdElemRef(int offset, bool noNullCheck, bool noBoundCheck, int destination, int array, int index) { _instructions.Add(new LdElemRef(offset, noNullCheck, noBoundCheck, destination, array, index)); }
-            public override void Leave(int offset, int address) { _instructions.Add(new Leave(offset, address)); }
+            public override void Leave(int offset, int address) { _instructions.Add(new Leave(offset, address)); _context.NeedLabel(address); }
             public override void LdFld(int offset, bool noNullCheck, bool volatilePrefix, int alignment, uint fieldToken, int destination, int obj) { _instructions.Add(new LdFld(offset, noNullCheck, volatilePrefix, alignment, fieldToken, destination, obj)); }
             public override void LdIndI1(int offset, bool volatilePrefix, int destination, int address) { _instructions.Add(new LdIndI1(offset, volatilePrefix, destination, address)); }
             public override void LdIndU1(int offset, bool volatilePrefix, int destination, int address) { _instructions.Add(new LdIndU1(offset, volatilePrefix, destination, address)); }

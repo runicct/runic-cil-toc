@@ -20,6 +20,7 @@
     <Compile Include="..\..\src\GC.cs" Link="GC.cs" />
     <Compile Include="..\..\src\Prototype.cs" Link="Prototype.cs" />
     <Compile Include="..\..\src\Signature.cs" Link="Signature.cs" />
+    <Compile Include="..\..\src\ExceptionHandling.cs" Link="ExceptionHandling.cs" />
     <Compile Include="..\..\src\ToC.cs" Link="ToC.cs" />
     <Compile Include="..\..\src\VariableDeclaration.cs" Link="VariableDeclaration.cs" />
     <Compile Include="..\..\src\Instructions\Add.cs" Link="Instructions\Add.cs" />

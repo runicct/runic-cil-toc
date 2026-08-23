@@ -25,6 +25,7 @@
 using System.Collections.Generic;
 using System.Text;
 using static Runic.CIL.ToC;
+using static Runic.CIL.ToC.Context;
 using static Runic.CIL.ToC.Signature;
 
 namespace Runic.CIL
@@ -86,7 +87,7 @@ namespace Runic.CIL
                 }
             }
             internal string GetBoxMethod(byte[] valueType) { return _toC.GetBoxMethod(valueType); }
-            internal string GetUnboxMethod(byte[] type, bool noTypeCheck) { return _toC.GetUnboxMethod(type, noTypeCheck); }
+            internal string GetUnboxMethod(byte[] type, bool noTypEhceck) { return _toC.GetUnboxMethod(type, noTypEhceck); }
             internal string GetNewMethod(uint ctorToken) { return _toC.GetNewMethod(ctorToken); }
             internal string GetNewArrMethod(byte[] elementType) { return _toC.GetNewArrMethod(elementType); }
             internal string GetInitObjMethod(byte[] objType) { return _toC.GetInitObjMethod(objType); }
@@ -102,10 +103,19 @@ namespace Runic.CIL
             internal string GetLdSFldAMethodName(uint fieldToken) { return _toC.GetLdSFldAMethodName(fieldToken); }
             internal string GetStSFldMethodName(uint fieldToken) { return _toC.GetStSFldMethodName(fieldToken); }
             internal string GetLdElemMethod(bool noNullCheck, bool noBoundCheck, byte[] elementType) { return _toC.GetLdElemMethod(noNullCheck, noBoundCheck, elementType); }
-            internal string GetStElemMethod(bool noNullCheck, bool noTypeCheck, bool noBoundCheck, byte[] elementType) { return _toC.GetStElemMethod(noNullCheck, noTypeCheck, noBoundCheck, elementType); }
+            internal string GetStElemMethod(bool noNullCheck, bool noTypEhceck, bool noBoundCheck, byte[] elementType) { return _toC.GetStElemMethod(noNullCheck, noTypEhceck, noBoundCheck, elementType); }
             internal string GetLdLenMethod() { return _toC.GetLdLenMethod(); }
             internal string GetString(uint token) { return _toC.GetString(token); }
             internal string GetStringTypeName() { return _toC.GetStringTypeName(); }
+            internal string GetTryPrologue(int tryBlockId) { return _toC.GetTryPrologue(tryBlockId); }
+            internal string GetTryEpilogue(int tryBlockId, string exceptionHandlerLabel) { return _toC.GetTryEpilogue(tryBlockId, exceptionHandlerLabel); }
+            internal string GetGetExceptionMethodName() { return _toC.GetGetExceptionMethodName(); }
+            internal string GetClearExceptionMethodName() { return _toC.GetClearExceptionMethodName(); }
+            internal string GetSetTryBlockEnvMethodName() { return _toC.GetSetTryBlockEnvMethodName(); }
+            internal string GetGetTryBlockEnvMethodName() { return _toC.GetGetTryBlockEnvMethodName(); }
+            internal string GetThrowMethodName() { return _toC.GetThrowMethodName(); }
+            internal string GetIsInstMethodName(uint typeToken) { return _toC.GetGetIsInstMethodName(typeToken); }
+
 #if NET6_0_OR_GREATER
             internal Signature.Type? GetType(int local)
 #else
@@ -126,6 +136,131 @@ namespace Runic.CIL
             HashSet<int> _isGCTracked = new HashSet<int>();
             internal bool IsGCTracked(int local) { return _isGCTracked.Contains(local); }
             internal IReadOnlyCollection<int> GetGCLocals() { return _isGCTracked; }
+            Stack<TryCatchFinally> _tryCatchStack;
+#if NET6_0_OR_GREATER
+            EhcMapEntry[]? _ehcMap;
+#else
+            EhcMapEntry[] _ehcMap;
+#endif
+
+            static ExceptionHandlingClause.Finally[] GetFinally(EhcMapEntry from, EhcMapEntry.Try to)
+            {
+#if NET6_0_OR_GREATER
+                EhcMapEntry? current = from;
+#else
+                EhcMapEntry current = from;
+#endif
+                List<ExceptionHandlingClause.Finally> finallyClauses = new List<ExceptionHandlingClause.Finally>();
+                while (current != null && current != to)
+                {
+                    switch (current)
+                    {
+                        case EhcMapEntry.Clause clauseEntry:
+                            if (clauseEntry.EhcClause.TryCatchFinally != null && clauseEntry.EhcClause.TryCatchFinally.Finally != null)
+                            {
+                                finallyClauses.Add(clauseEntry.EhcClause.TryCatchFinally.Finally);
+                            }
+                            break;
+                        case EhcMapEntry.Try tryEntry:
+                            if (tryEntry.TryCatchFinally.Finally != null)
+                            {
+                                finallyClauses.Add(tryEntry.TryCatchFinally.Finally);
+                            }
+                            break;
+                    }
+                    current = current.Parent;
+                }
+                return finallyClauses.ToArray();
+            }
+            internal ExceptionHandlingClause.Finally[] GetFinally(int from, int to)
+            {
+                return GetFinally(_ehcMap[from], _ehcMap[to] as EhcMapEntry.Try);
+            }
+#if NET6_0_OR_GREATER
+            internal TryCatchFinally? GetTryCatchFinally(int offset)
+#else
+            internal TryCatchFinally GetTryCatchFinally(int offset)
+#endif
+            {
+                EhcMapEntry entry = _ehcMap[offset];
+                if (entry != null)
+                {
+                    switch (entry)
+                    {
+                        case EhcMapEntry.Try tryEntry: return tryEntry.TryCatchFinally;
+                        case EhcMapEntry.Clause clauseEntry: return clauseEntry.EhcClause.TryCatchFinally;
+                    }
+                }
+                return null;
+            }
+
+            void EmitTryCatchFinally(int offset, int nextInstructionOffset)
+            {
+                while (_tryCatchStack.Count > 0)
+                {
+                    TryCatchFinally tryCatchFinally = _tryCatchStack.Peek();
+                    if (nextInstructionOffset >= tryCatchFinally.TryOffset + tryCatchFinally.TryLength)
+                    {
+                        _toC.Emit(offset, "    " + GetTryEpilogue((int)tryCatchFinally.Id, "exceptionHandler_" + tryCatchFinally.Id.ToString("X4")));
+                        _tryCatchStack.Pop();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (_neededLabels.Contains(nextInstructionOffset) && !_emittedOffsets.Contains(nextInstructionOffset))
+                {
+                    _emittedOffsets.Add(nextInstructionOffset);
+                    _toC.Emit("    lbl_" + nextInstructionOffset.ToString("X4") + ": ;");
+                }
+
+                EhcMapEntry entry = _ehcMap[nextInstructionOffset];
+                if (entry != null)
+                {
+                    EhcMapEntry nestedTry = entry;
+                    Stack<TryCatchFinally> nestedTryStack = new Stack<TryCatchFinally>();
+                    while (nestedTry != null)
+                    {
+                        if (nestedTry is EhcMapEntry.Try tryEntry)
+                        {
+                            nestedTryStack.Push(tryEntry.TryCatchFinally);
+                        }
+                        nestedTry = nestedTry.Parent;
+                    }
+
+                    while (nestedTryStack.Count > 0)
+                    {
+                        TryCatchFinally tryCatchFinally = nestedTryStack.Pop();
+                        _toC.Emit(nextInstructionOffset, "    " + GetTryPrologue((int)tryCatchFinally.Id));
+                        _tryCatchStack.Push(tryCatchFinally);
+                    }
+
+                    if (entry is EhcMapEntry.Clause)
+                    {
+
+
+
+                        EhcMapEntry parent = entry.Parent;
+                        switch (parent)
+                        {
+                            case EhcMapEntry.Try tryEntry:
+                                _toC.Emit(nextInstructionOffset, "    " + GetSetTryBlockEnvMethodName() + "(&tryblockenv_" + tryEntry.TryCatchFinally.Id.ToString("X4") + ");");
+                                break;
+                            case EhcMapEntry.Clause clauseEntry:
+                                if (clauseEntry.EhcClause.TryCatchFinally != null)
+                                {
+                                    _toC.Emit(nextInstructionOffset, "    " + GetSetTryBlockEnvMethodName() + "(&tryblockenv_" + clauseEntry.EhcClause.TryCatchFinally.Id.ToString("X4") + ");");
+                                }
+                                break;
+                            default:
+                                _toC.Emit(nextInstructionOffset, "    " + GetSetTryBlockEnvMethodName() + "(parent_tryblockenv);");
+                                break;
+                        }
+                    }
+                }
+            }
+            HashSet<int> _emittedOffsets = new HashSet<int>();
 
 #if NET6_0_OR_GREATER
             public void Process(ExceptionHandlingClause[]? exceptionHandlingClauses, uint methodToken, byte[] bytecode)
@@ -134,11 +269,8 @@ namespace Runic.CIL
 #endif
             {
                 string name = GetMethodName(methodToken);
-                HashSet<int> emittedOffsets = new HashSet<int>();
                 uint typeGenericParameterCount = 0;
-                uint signatureOffset = 0;
                 Signature.Type[] parameters;
-                Signature.Type[] locals;
                 byte[] methodSignatureCode = GetMethodSignature(methodToken);
                 Signature.MethodSignature methodSignature = new Signature.MethodSignature(methodSignatureCode);
                 if (methodSignature.HasThis)
@@ -186,20 +318,21 @@ namespace Runic.CIL
 
 #if NET6_0_OR_GREATER
                 CIL.Destackifier.ExceptionHandlingClause[]? convertedEhc = null;
+                TryCatchFinally[]? mergedEhc = null;
 #else
                 CIL.Destackifier.ExceptionHandlingClause[] convertedEhc = null;
+                TryCatchFinally[] mergedEhc = null;
 #endif
-                if (exceptionHandlingClauses != null)
+                if (exceptionHandlingClauses != null && exceptionHandlingClauses.Length > 0)
                 {
-                    convertedEhc = new Destackifier.ExceptionHandlingClause[exceptionHandlingClauses.Length];
                     for (int n = 0; n < exceptionHandlingClauses.Length; n++)
                     {
-                        switch (exceptionHandlingClauses[n])
-                        {
-                            case ExceptionHandlingClause.Filter filter: convertedEhc[n] = new Destackifier.ExceptionHandlingClause.Filter(filter.FilterOffset, filter.HandlerOffset); break;
-                            case ExceptionHandlingClause.Clause clause: convertedEhc[n] = new Destackifier.ExceptionHandlingClause.Clause(clause.HandlerOffset); break;
-                        }
+                        exceptionHandlingClauses[n].Label = "lbl_" + exceptionHandlingClauses[n].HandlerOffset.ToString("X4");
+                        _neededLabels.Add(exceptionHandlingClauses[n].HandlerOffset);
                     }
+                    mergedEhc = MergeEhc(exceptionHandlingClauses);
+                    _ehcMap = CreateEhcMap((uint)bytecode.Length, mergedEhc);
+                    convertedEhc = ConvertToDestakifierEhc(exceptionHandlingClauses);
                 }
 
                 if (convertedEhc != null) { _disassembler.Destackify(convertedEhc, methodToken, bytecode); }
@@ -215,20 +348,44 @@ namespace Runic.CIL
                 Prototype.EmitPrototype(name, typeGenericParameterCount, methodSignature.GenericParametersCount, this, methodSignature.ReturnType, parameters);
                 if (macro) { _toC.Emit(0, "{ \\"); }
                 else { _toC.Emit(0, "{"); }
-                VariableDeclaration.EmitLocals(this, _locals, true);
+                VariableDeclaration.EmitLocals(this, _locals, true, (exceptionHandlingClauses != null) && (exceptionHandlingClauses.Length > 0));
+                _tryCatchStack = new Stack<TryCatchFinally>();
+
+                if (_ehcMap != null && _ehcMap[0] != null) 
+                {
+                    _toC.Emit(0, "    uint32_t finallyTarget = 0;");
+                    _toC.Emit(0, "    void* parent_tryblockenv = (void*) " + GetGetTryBlockEnvMethodName() + "();");
+                    EmitTryCatchFinally(-1, 0); 
+                }
                 for (int n = 0; n < _disassembler.Instructions.Count; n++)
                 {
                     int offset = _disassembler.Instructions[n].Offset;
+                    int nextInstructionOffset = (n + 1 >= _disassembler.Instructions.Count) ? bytecode.Length : _disassembler.Instructions[n + 1].Offset;
+                    ExceptionHandlingClause clause;
                     _currentLine = new StringBuilder();
                     _currentLine.Append("    ");
-                    if (_neededLabels.Contains(offset) && !emittedOffsets.Contains(offset))
+                    if (_neededLabels.Contains(offset) && !_emittedOffsets.Contains(offset))
                     {
                         _currentLine.Append("lbl_" + offset.ToString("X4") + ": ");
                     }
-                    emittedOffsets.Add(offset);
+                    _emittedOffsets.Add(offset);
                     _disassembler.Instructions[n].ToC(this);
                     if (macro) { _currentLine.Append(" \\"); }
                     _toC.Emit(offset, _currentLine.ToString());
+
+                    // Check if we have an EHC transition
+                    bool hasEhcTransition = _ehcMap != null && (_ehcMap[offset] != _ehcMap[nextInstructionOffset]);
+                    if (hasEhcTransition) { EmitTryCatchFinally(offset, nextInstructionOffset); }
+                }
+                while (_tryCatchStack.Count > 0)
+                {
+                    TryCatchFinally tryCatchFinally = _tryCatchStack.Pop();
+                    _toC.Emit(0, "    " + GetTryEpilogue(0, "exceptionHandler_" + tryCatchFinally.Id.ToString("X4")));
+                }
+                foreach (TryCatchFinally tryCatchFinally in mergedEhc)
+                {
+                    _toC.Emit(0, "    exceptionHandler_" + tryCatchFinally.Id.ToString("X4") + ":");
+                    _toC.Emit(0, _toC.BuildExceptionHandler(tryCatchFinally.Clauses.ToArray()));
                 }
                 _toC.Emit(0, "}");
             }

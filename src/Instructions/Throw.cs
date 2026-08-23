@@ -41,6 +41,10 @@ namespace Runic.CIL
             {
                 _exception = exception;
             }
+            public override void ToC(Context context)
+            {
+                context.EmitLine(context.GetThrowMethodName()  + "(loc_" + _exception.ToString("X4") + ");");
+            }
         }
     }
 }

@@ -38,6 +38,35 @@ namespace Runic.CIL
             public EndFinally(int offset) : base(offset)
             {
             }
+            public override void ToC(Context context)
+            {
+                TryCatchFinally tryCatchFinally = context.GetTryCatchFinally(Offset);
+                string exceptionPrefix = "if (" + context.GetGetExceptionMethodName() + "()) { " + context.GetThrowMethodName() + "(" + context.GetGetExceptionMethodName() + "()); } ";
+                if (tryCatchFinally != null && tryCatchFinally.Finally != null)
+                {
+                    ExceptionHandlingClause.Finally @finally = tryCatchFinally.Finally;
+                    switch (@finally.Targets.Count)
+                    {
+                        case 0: break;
+                        case 1: context.EmitLine(exceptionPrefix + "goto lbl_" + @finally.Targets.First().ToString("X4") + ";"); break;
+                        default:
+                            StringBuilder switchCaseBuilder = new StringBuilder();
+                            switchCaseBuilder.Append(exceptionPrefix);
+                            switchCaseBuilder.Append("switch (finallyTarget) {");
+                            foreach (int target in @finally.Targets)
+                            {
+                                switchCaseBuilder.Append("case 0x" + target.ToString("X4") + ": goto lbl_" + target.ToString("X4") + ";");
+                            }
+                            switchCaseBuilder.Append("}");
+                            context.EmitLine(switchCaseBuilder.ToString());
+                            break;
+                    }
+                }
+                else
+                {
+                    throw new Exception("Invalid EndFinally instruction at offset " + Offset.ToString("X4") + ": no matching try-catch-finally block found.");
+                }
+            }
         }
     }
 }

@@ -32,13 +32,21 @@ namespace Runic.CIL
     {
         internal static class VariableDeclaration
         {
-            public static void EmitLocals(Context context, Dictionary<int, Signature.Type> locals, bool initializeLocals)
+            public static void EmitLocals(Context context, Dictionary<int, Signature.Type> locals, bool initializeLocals, bool volatileLocals)
             {
+                string volatilePrefix = volatileLocals ? "volatile " : "";
                 foreach (var kvp in locals)
                 {
                     if (context.IsGCTracked(kvp.Key))
                     {
-                        context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;");
+                        if (volatileLocals)
+                        {
+                            context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " volatile loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;");
+                        }
+                        else
+                        {
+                            context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";");
+                        }
                     }
                     else
                     {
@@ -46,31 +54,40 @@ namespace Runic.CIL
                         {
                             switch (kvp.Value)
                             {
-                                case Signature.Type.Int8 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.UInt8 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0U;"); break;
-                                case Signature.Type.Int16 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.UInt16 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0U;"); break;
-                                case Signature.Type.Int32 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0;"); break;
-                                case Signature.Type.UInt32 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0U;"); break;
-                                case Signature.Type.Int64 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0LL;"); break;
-                                case Signature.Type.UInt64 _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0ULL;"); break;
-                                case Signature.Type.Float _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0.0f;"); break;
-                                case Signature.Type.Double _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0.0;"); break;
-                                case Signature.Type.ValueType _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = {0};"); break;
-                                case Signature.Type.Pointer _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.TypeToken _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.Bool _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0;"); break;
-                                case Signature.Type.NInt _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.NUInt _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.Object _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.ArrayType _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                case Signature.Type.Char _: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
-                                default: context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";"); break;
+                                case Signature.Type.Int8 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.UInt8 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0U;"); break;
+                                case Signature.Type.Int16 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.UInt16 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0U;"); break;
+                                case Signature.Type.Int32 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0;"); break;
+                                case Signature.Type.UInt32 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0U;"); break;
+                                case Signature.Type.Int64 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0LL;"); break;
+                                case Signature.Type.UInt64 _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0ULL;"); break;
+                                case Signature.Type.Float _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0.0f;"); break;
+                                case Signature.Type.Double _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0.0;"); break;
+                                case Signature.Type.ValueType _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = {0};"); break;
+                                case Signature.Type.Pointer _:
+                                    if (volatileLocals)
+                                    {
+                                        context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " volatile loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;");
+                                    }
+                                    else
+                                    {
+                                        context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";");
+                                    }
+                                    break;
+                                case Signature.Type.TypeToken _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.Bool _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = 0;"); break;
+                                case Signature.Type.NInt _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.NUInt _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.Object _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.ArrayType _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                case Signature.Type.Char _: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + " = (" + kvp.Value.ToC(context) + ")0;"); break;
+                                default: context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";"); break;
                             }
                         }
                         else
                         {
-                            context.Parent.Emit(0, "    " + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";");
+                            context.Parent.Emit(0, "    " + volatilePrefix + kvp.Value.ToC(context) + " loc_" + kvp.Key.ToString("X4") + ";");
                         }
                     }
                 }

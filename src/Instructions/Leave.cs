@@ -40,6 +40,29 @@ namespace Runic.CIL
             {
                 _address = address;
             }
+            public override void ToC(Context context)
+            {
+                ExceptionHandlingClause.Finally[] finallyClauses = context.GetFinally(Offset, _address);
+
+                context.EmitLine(context.GetClearExceptionMethodName() + "();");
+                if (finallyClauses.Length == 0)
+                {
+                    context.EmitLine("goto lbl_" + _address.ToString("X4") + ";");
+                    return;
+                }
+                if (finallyClauses.Length == 1)
+                {
+                    context.EmitLine("finallyTarget = 0x" + _address.ToString("X4") + "; ");
+                    finallyClauses[0].AddTarget(_address);
+                    context.EmitLine("goto lbl_" + finallyClauses[0].HandlerOffset.ToString("X4") + ";");
+                    return;
+                }
+
+                throw new Exception("Multiple finally clauses are not yet supported.");
+                context.EmitLine("finallyTarget = 0x" + _address.ToString("X4") + "; ");
+                finallyClauses[0].AddTarget(_address);
+                context.EmitLine("goto lbl_" + finallyClauses[0].HandlerOffset.ToString("X4") + ";");
+            }
         }
     }
 }

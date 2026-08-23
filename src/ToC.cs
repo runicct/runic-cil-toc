@@ -34,22 +34,47 @@ namespace Runic.CIL
     {
         public class ExceptionHandlingClause
         {
+            string _label;
+            internal string Label { get { return _label; } set { _label = value; } }
+#if NET6_0_OR_GREATER
+            TryCatchFinally? _tryCatchFinally;
+            internal TryCatchFinally? TryCatchFinally { get { return _tryCatchFinally; } set { _tryCatchFinally = value; } }
+#else
+            TryCatchFinally _tryCatchFinally;
+            internal TryCatchFinally TryCatchFinally { get { return _tryCatchFinally; } set { _tryCatchFinally = value; } }
+#endif
             public class Filter : ExceptionHandlingClause
             {
                 int _filterOffset;
                 internal int FilterOffset { get { return _filterOffset; } }
-                public Filter(int filterOffset, int handlerOffset) : base(handlerOffset) { _filterOffset = filterOffset; }
+                public Filter(int tryOffset, int tryLength, int filterOffset, int handlerOffset, int handlerLength) : base(tryOffset, tryLength, handlerOffset, handlerLength) { _filterOffset = filterOffset; }
             }
             public class Clause : ExceptionHandlingClause
             {
-                public Clause(int handlerOffset) : base(handlerOffset) { }
+                public Clause(int tryOffset, int tryLength, int handlerOffset, int handlerLength) : base(tryOffset, tryLength, handlerOffset, handlerLength) { }
             }
+            public class Finally : ExceptionHandlingClause
+            {
+                HashSet<int> _targets = new HashSet<int>();
+                internal void AddTarget(int target) { _targets.Add(target); }
+                internal HashSet<int> Targets { get { return _targets; } }
+                public Finally(int tryOffset, int tryLength, int handlerOffset, int handlerLength) : base(tryOffset, tryLength, handlerOffset, handlerLength) { }
+            }
+            int _tryOffset;
+            internal int TryOffset { get { return _tryOffset; } }
+            int _tryLength;
+            internal int TryLength { get { return _tryLength; } }
             int _handlerOffset;
             internal int HandlerOffset { get { return _handlerOffset; } }
+            int _handlerLength;
+            internal int HandlerLength { get { return _handlerLength; } }
 
-            internal ExceptionHandlingClause(int handlerOffset)
+            internal ExceptionHandlingClause(int tryOffset, int tryLength, int handlerOffset, int handlerLength)
             {
+                _tryOffset = tryOffset;
+                _tryLength = tryLength;
                 _handlerOffset = handlerOffset;
+                _handlerLength = handlerLength;
             }
         }
         public virtual void Requires(uint metadataToken) { }
@@ -81,6 +106,24 @@ namespace Runic.CIL
         public virtual string GetStSFldMethodName(uint fieldToken) { return "stsfld_" + fieldToken.ToString("X8"); }
         public virtual string GetLdSFldMethodName(uint fieldToken) { return "ldsfld_" + fieldToken.ToString("X8"); }
         public virtual string GetLdSFldAMethodName(uint fieldToken) { return "ldsflda_" + fieldToken.ToString("X8"); }
+        public virtual string GetGetIsInstMethodName(uint typeToken) { return "isinst_" + typeToken.ToString("X8"); }
+        public virtual string GetGetExceptionMethodName() { return "get_exception"; }
+        public virtual string GetClearExceptionMethodName() { return "clear_exception"; }
+        public virtual string GetSetTryBlockEnvMethodName() { return "set_tryblockenv"; }
+        public virtual string GetGetTryBlockEnvMethodName() { return "get_tryblockenv"; }
+        public virtual string GetThrowMethodName() { return "throw"; }
+        public virtual string GetTryPrologue(int tryBlockId)
+        {
+            return ("jmp_buf tryblockenv_" + tryBlockId.ToString("X4") + "; int tryblockret_" + tryBlockId.ToString("X4") + " = setjmp(tryblockenv_" + tryBlockId.ToString("X4") + "); if (tryblockret_" + tryBlockId.ToString("X4") + " == 0) { " + GetSetTryBlockEnvMethodName() + "(&tryblockenv_" + tryBlockId.ToString("X4") + ");");
+        }
+        public virtual string GetTryEpilogue(int tryBlockId, string exceptionHandlerLabel)
+        {
+            return ("} else { goto " + exceptionHandlerLabel + "; }");
+        }
+        public virtual string BuildExceptionHandler(ExceptionHandlingClause[] exceptionHandlingClauses)
+        {
+            return "goto " + exceptionHandlingClauses[0].Label + "; /* Default exception handler. Doesn't work for filtering override BuildExceptionHandler if needed */";
+        }
         public virtual void Emit(int offset, string code) { Emit(code); }
         public abstract void Emit(string code);
         public void Process(uint methodToken, byte[] bytecode) { Process(null, methodToken, bytecode); }

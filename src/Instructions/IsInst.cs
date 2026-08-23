@@ -46,6 +46,10 @@ namespace Runic.CIL
                 _typeToken = typeToken;
                 _value = value;
             }
+            public override void ToC(Context context)
+            {
+                context.EmitLine("loc_" + _destination.ToString("X4") + " = " + context.GetIsInstMethodName(_typeToken) + "(loc_" + _value.ToString("X4") + ");");
+            }
         }
     }
 }
